@@ -1,0 +1,113 @@
+# ============================================================
+# English-to-Arabic Machine Translator - Docker Compose
+# ============================================================
+# Services: MongoDB, SQL Server, Django Backend, React Frontend, ML Worker (GPU)
+# Usage: docker-compose up --build
+# ============================================================
+
+services:
+  # --------------- MongoDB ---------------
+  mongodb:
+    image: mongo:7.0
+    container_name: mt_mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - mt_network
+    restart: unless-stopped
+
+  # --------------- SQL Server ---------------
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mt_sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - mt_network
+    restart: unless-stopped
+
+  # --------------- Django Backend ---------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mt_backend
+    command: >
+      sh -c "python manage.py migrate --database=default --noinput &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./backend:/app
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./charts:/app/charts
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+      - sqlserver
+    networks:
+      - mt_network
+    restart: unless-stopped
+
+  # --------------- React Frontend ---------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: mt_frontend
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - mt_network
+    restart: unless-stopped
+
+  # --------------- ML Worker (GPU) ---------------
+  ml_worker:
+    build:
+      context: ./ml_worker
+      dockerfile: Dockerfile
+    container_name: mt_ml_worker
+    volumes:
+      - ./backend/ml:/app/ml
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./charts:/app/charts
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    depends_on:
+      - mongodb
+      - sqlserver
+    networks:
+      - mt_network
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
+  sql_data:
+
+networks:
+  mt_network:
+    driver: bridge

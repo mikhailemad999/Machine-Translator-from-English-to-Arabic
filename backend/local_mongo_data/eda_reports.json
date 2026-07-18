@@ -1,0 +1,1598 @@
+[
+  {
+    "type": "exploration",
+    "step": 1,
+    "report": {
+      "shape": {
+        "rows": 40,
+        "cols": 5
+      },
+      "columns": [
+        "id",
+        "english",
+        "ar",
+        "domain",
+        "en"
+      ],
+      "dtypes": {
+        "id": "int64",
+        "english": "str",
+        "ar": "str",
+        "domain": "str",
+        "en": "str"
+      },
+      "summary": {
+        "en": {
+          "non_null": 40,
+          "null_count": 0,
+          "unique": 1,
+          "avg_length_chars": 6.0,
+          "avg_length_tokens": 1.0
+        },
+        "ar": {
+          "non_null": 40,
+          "null_count": 0,
+          "unique": 40,
+          "avg_length_chars": 33.525,
+          "avg_length_tokens": 5.675
+        }
+      },
+      "sample_pairs": [
+        {
+          "en": "manual",
+          "ar": "مرحبا، كيف حالك؟"
+        },
+        {
+          "en": "manual",
+          "ar": "ما اسمك؟"
+        },
+        {
+          "en": "manual",
+          "ar": "أحب تعلم لغات جديدة."
+        },
+        {
+          "en": "manual",
+          "ar": "الطقس جميل اليوم."
+        },
+        {
+          "en": "manual",
+          "ar": "هل يمكنك مساعدتي من فضلك؟"
+        },
+        {
+          "en": "manual",
+          "ar": "أين أقرب مستشفى؟"
+        },
+        {
+          "en": "manual",
+          "ar": "أود كوباً من القهوة."
+        },
+        {
+          "en": "manual",
+          "ar": "أراك غداً."
+        },
+        {
+          "en": "manual",
+          "ar": "شكراً جزيلاً."
+        },
+        {
+          "en": "manual",
+          "ar": "أنا آسف على التأخير."
+        }
+      ],
+      "arabic_content_pct": 100.0,
+      "english_content_pct": 100.0,
+      "encoding_issues": [
+        "No encoding issues detected"
+      ],
+      "encoding_notes": "Dataset contains 40 sentence pairs. Arabic content detected in 100.0% of AR column samples. English content detected in 100.0% of EN column samples."
+    },
+    "dataset_id": 1,
+    "created_at": "2026-07-17T22:02:02.995344",
+    "_id": "1"
+  },
+  {
+    "type": "preprocessing_complete",
+    "preprocessing_run_id": 1,
+    "step_reports": {
+      "step_1_exploration": {
+        "shape": {
+          "rows": 40,
+          "cols": 5
+        },
+        "columns": [
+          "id",
+          "english",
+          "ar",
+          "domain",
+          "en"
+        ],
+        "dtypes": {
+          "id": "int64",
+          "english": "str",
+          "ar": "str",
+          "domain": "str",
+          "en": "str"
+        },
+        "summary": {
+          "en": {
+            "non_null": 40,
+            "null_count": 0,
+            "unique": 1,
+            "avg_length_chars": 6.0,
+            "avg_length_tokens": 1.0
+          },
+          "ar": {
+            "non_null": 40,
+            "null_count": 0,
+            "unique": 40,
+            "avg_length_chars": 33.525,
+            "avg_length_tokens": 5.675
+          }
+        },
+        "sample_pairs": [
+          {
+            "en": "manual",
+            "ar": "مرحبا، كيف حالك؟"
+          },
+          {
+            "en": "manual",
+            "ar": "ما اسمك؟"
+          },
+          {
+            "en": "manual",
+            "ar": "أحب تعلم لغات جديدة."
+          },
+          {
+            "en": "manual",
+            "ar": "الطقس جميل اليوم."
+          },
+          {
+            "en": "manual",
+            "ar": "هل يمكنك مساعدتي من فضلك؟"
+          },
+          {
+            "en": "manual",
+            "ar": "أين أقرب مستشفى؟"
+          },
+          {
+            "en": "manual",
+            "ar": "أود كوباً من القهوة."
+          },
+          {
+            "en": "manual",
+            "ar": "أراك غداً."
+          },
+          {
+            "en": "manual",
+            "ar": "شكراً جزيلاً."
+          },
+          {
+            "en": "manual",
+            "ar": "أنا آسف على التأخير."
+          }
+        ],
+        "arabic_content_pct": 100.0,
+        "english_content_pct": 100.0,
+        "encoding_issues": [
+          "No encoding issues detected"
+        ],
+        "encoding_notes": "Dataset contains 40 sentence pairs. Arabic content detected in 100.0% of AR column samples. English content detected in 100.0% of EN column samples."
+      },
+      "step_2_duplicates": {
+        "total_rows": 40,
+        "duplicates_full_pair": {
+          "count": 0,
+          "percentage": 0.0,
+          "description": "Exact same EN+AR sentence pair appears more than once"
+        },
+        "duplicates_en_only": {
+          "count": 40,
+          "percentage": 100.0,
+          "description": "Same English sentence with different Arabic translations"
+        },
+        "duplicates_ar_only": {
+          "count": 0,
+          "percentage": 0.0,
+          "description": "Same Arabic sentence with different English sources"
+        },
+        "duplicate_samples": [],
+        "removed_count": 0,
+        "remaining_rows": 40,
+        "action_taken": "Removed 0 exact duplicate pairs (kept first occurrence). Dataset reduced from 40 to 40 rows."
+      },
+      "step_3_missing_values": {
+        "total_rows": 40,
+        "columns": {
+          "id": {
+            "null_count": 0,
+            "empty_string_count": 0,
+            "whitespace_only_count": 0,
+            "total_missing": 0,
+            "missing_percentage": 0.0
+          },
+          "english": {
+            "null_count": 0,
+            "empty_string_count": 0,
+            "whitespace_only_count": 0,
+            "total_missing": 0,
+            "missing_percentage": 0.0
+          },
+          "ar": {
+            "null_count": 0,
+            "empty_string_count": 0,
+            "whitespace_only_count": 0,
+            "total_missing": 0,
+            "missing_percentage": 0.0
+          },
+          "domain": {
+            "null_count": 0,
+            "empty_string_count": 0,
+            "whitespace_only_count": 0,
+            "total_missing": 0,
+            "missing_percentage": 0.0
+          },
+          "en": {
+            "null_count": 0,
+            "empty_string_count": 0,
+            "whitespace_only_count": 0,
+            "total_missing": 0,
+            "missing_percentage": 0.0
+          }
+        },
+        "summary": {
+          "en_missing": 0,
+          "ar_missing": 0,
+          "en_missing_pct": 0.0,
+          "ar_missing_pct": 0.0,
+          "recommendation": "No missing values detected. No action needed."
+        },
+        "removed_count": 0,
+        "remaining_rows": 40,
+        "strategy_used": "drop",
+        "action_taken": "Dropped 0 rows with missing/empty EN or AR text. Dataset reduced from 40 to 40 rows."
+      },
+      "step_4_outliers": {
+        "total_rows": 40,
+        "length_stats": {
+          "en_tokens": {
+            "mean": 1.0,
+            "std": 0.0,
+            "min": 1.0,
+            "max": 1.0,
+            "median": 1.0,
+            "q25": 1.0,
+            "q75": 1.0
+          },
+          "ar_tokens": {
+            "mean": 5.67,
+            "std": 1.98,
+            "min": 2.0,
+            "max": 10.0,
+            "median": 6.0,
+            "q25": 4.0,
+            "q75": 7.0
+          },
+          "en_chars": {
+            "mean": 6.0,
+            "std": 0.0,
+            "min": 6.0,
+            "max": 6.0,
+            "median": 6.0,
+            "q25": 6.0,
+            "q75": 6.0
+          },
+          "ar_chars": {
+            "mean": 28.85,
+            "std": 10.4,
+            "min": 7.0,
+            "max": 46.0,
+            "median": 31.5,
+            "q25": 20.0,
+            "q75": 36.0
+          },
+          "length_ratio": {
+            "mean": 0.21,
+            "std": 0.1,
+            "min": 0.1,
+            "max": 0.5,
+            "median": 0.17,
+            "q25": 0.14,
+            "q75": 0.25
+          }
+        },
+        "outliers": {
+          "zscore": {
+            "count": 0,
+            "percentage": 0.0
+          },
+          "iqr": {
+            "count": 0,
+            "percentage": 0.0
+          },
+          "length_ratio_filter": {
+            "count": 34,
+            "percentage": 85.0,
+            "threshold": "[0.3, 3.0]"
+          },
+          "combined": {
+            "count": 34,
+            "percentage": 85.0
+          }
+        },
+        "outlier_samples": [
+          {
+            "en": "manual",
+            "ar": "أحب تعلم لغات جديدة.",
+            "en_tokens": 1,
+            "ar_tokens": 4,
+            "length_ratio": 0.25
+          },
+          {
+            "en": "manual",
+            "ar": "هل يمكنك مساعدتي من فضلك؟",
+            "en_tokens": 1,
+            "ar_tokens": 5,
+            "length_ratio": 0.2
+          },
+          {
+            "en": "manual",
+            "ar": "أود كوباً من القهوة.",
+            "en_tokens": 1,
+            "ar_tokens": 4,
+            "length_ratio": 0.25
+          },
+          {
+            "en": "manual",
+            "ar": "أنا آسف على التأخير.",
+            "en_tokens": 1,
+            "ar_tokens": 4,
+            "length_ratio": 0.25
+          },
+          {
+            "en": "manual",
+            "ar": "التقى الرئيس بوزراء الخارجية اليوم.",
+            "en_tokens": 1,
+            "ar_tokens": 5,
+            "length_ratio": 0.2
+          }
+        ],
+        "removed_count": 34,
+        "remaining_rows": 6,
+        "outlier_pct": 85.0,
+        "action_taken": "Removed 34 outlier pairs using Z-score + IQR + length-ratio filters. Additionally capped at 95th percentile. Dataset reduced from 40 to 6 rows."
+      },
+      "step_5_charts": [
+        {
+          "name": "English Length Histogram",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_1_en_length_hist.png",
+          "filename": "chart_1_en_length_hist.png"
+        },
+        {
+          "name": "Arabic Length Histogram",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_2_ar_length_hist.png",
+          "filename": "chart_2_ar_length_hist.png"
+        },
+        {
+          "name": "KDE Overlay EN vs AR",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_3_kde_overlay.png",
+          "filename": "chart_3_kde_overlay.png"
+        },
+        {
+          "name": "Scatter EN vs AR Lengths",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_4_scatter_lengths.png",
+          "filename": "chart_4_scatter_lengths.png"
+        },
+        {
+          "name": "Boxplot Lengths",
+          "path": null,
+          "error": "Axes.boxplot() got an unexpected keyword argument 'labels'"
+        },
+        {
+          "name": "Correlation Heatmap",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_6_correlation_heatmap.png",
+          "filename": "chart_6_correlation_heatmap.png"
+        },
+        {
+          "name": "Length Category Distribution",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_7_length_categories.png",
+          "filename": "chart_7_length_categories.png"
+        }
+      ],
+      "step_6_imbalance": {
+        "total_rows": 6,
+        "is_applicable": true,
+        "label_column": "length_category",
+        "note": "No domain labels found. Created synthetic \"length_category\" (very_short/short/medium/long/very_long) based on English sentence token count to demonstrate imbalance analysis technique.",
+        "is_synthetic": true,
+        "class_distribution": {
+          "very_short": {
+            "count": 6,
+            "percentage": 100.0
+          }
+        },
+        "is_imbalanced": "False",
+        "imbalance_ratio": 1.0,
+        "majority_class": "very_short",
+        "minority_class": "very_short",
+        "majority_pct": 100.0,
+        "minority_pct": 100.0,
+        "strategy": "none",
+        "distribution_before": {
+          "very_short": {
+            "count": 6,
+            "percentage": 100.0
+          }
+        },
+        "action_taken": "Dataset is balanced. No action needed.",
+        "distribution_after": {
+          "very_short": {
+            "count": 6,
+            "percentage": 100.0
+          }
+        }
+      }
+    },
+    "dataset_id": 1,
+    "created_at": "2026-07-17T22:03:27.405272",
+    "_id": "2"
+  },
+  {
+    "type": "exploration",
+    "step": 1,
+    "report": {
+      "shape": {
+        "rows": 5640,
+        "cols": 5
+      },
+      "columns": [
+        "id",
+        "english",
+        "ar",
+        "domain",
+        "en"
+      ],
+      "dtypes": {
+        "id": "int64",
+        "english": "str",
+        "ar": "str",
+        "domain": "str",
+        "en": "str"
+      },
+      "summary": {
+        "en": {
+          "non_null": 5640,
+          "null_count": 0,
+          "unique": 2,
+          "avg_length_chars": 17.914893617021278,
+          "avg_length_tokens": 1.0
+        },
+        "ar": {
+          "non_null": 5640,
+          "null_count": 0,
+          "unique": 5640,
+          "avg_length_chars": 35.51843971631206,
+          "avg_length_tokens": 6.615425531914894
+        }
+      },
+      "sample_pairs": [
+        {
+          "en": "template_generated",
+          "ar": "سألتقي بـجون العام الماضي في روما."
+        },
+        {
+          "en": "template_generated",
+          "ar": "اتصل نور بـديفيد هذا المساء ليشكره."
+        },
+        {
+          "en": "template_generated",
+          "ar": "يطبخ أحمد القهوة للعشاء هذا المساء."
+        },
+        {
+          "en": "template_generated",
+          "ar": "اتصل جون بـهناء هذا المساء ليشكره."
+        },
+        {
+          "en": "template_generated",
+          "ar": "سافر سارة من لندن إلى تورنتو غدا."
+        },
+        {
+          "en": "template_generated",
+          "ar": "كُتبت قصيدة علي اليوم في لندن."
+        },
+        {
+          "en": "template_generated",
+          "ar": "يعاني أحمد من ارتفاع ضغط الدم منذ 20 أيام."
+        },
+        {
+          "en": "template_generated",
+          "ar": "سافر ليلى من لندن إلى روما هذا المساء."
+        },
+        {
+          "en": "template_generated",
+          "ar": "سألتقي بـسارة أمس في الرياض."
+        },
+        {
+          "en": "template_generated",
+          "ar": "نما اقتصاد إيطاليا بنسبة 38 بالمئة هذا العام."
+        }
+      ],
+      "arabic_content_pct": 100.0,
+      "english_content_pct": 100.0,
+      "encoding_issues": [
+        "No encoding issues detected"
+      ],
+      "encoding_notes": "Dataset contains 5640 sentence pairs. Arabic content detected in 100.0% of AR column samples. English content detected in 100.0% of EN column samples."
+    },
+    "dataset_id": 2,
+    "created_at": "2026-07-17T22:10:04.603778",
+    "_id": "3"
+  },
+  {
+    "type": "exploration",
+    "step": 1,
+    "report": {
+      "shape": {
+        "rows": 5640,
+        "cols": 5
+      },
+      "columns": [
+        "id",
+        "english",
+        "ar",
+        "domain",
+        "en"
+      ],
+      "dtypes": {
+        "id": "int64",
+        "english": "str",
+        "ar": "str",
+        "domain": "str",
+        "en": "str"
+      },
+      "summary": {
+        "en": {
+          "non_null": 5640,
+          "null_count": 0,
+          "unique": 2,
+          "avg_length_chars": 17.914893617021278,
+          "avg_length_tokens": 1.0
+        },
+        "ar": {
+          "non_null": 5640,
+          "null_count": 0,
+          "unique": 5640,
+          "avg_length_chars": 35.51843971631206,
+          "avg_length_tokens": 6.615425531914894
+        }
+      },
+      "sample_pairs": [
+        {
+          "en": "template_generated",
+          "ar": "سألتقي بـجون العام الماضي في روما."
+        },
+        {
+          "en": "template_generated",
+          "ar": "اتصل نور بـديفيد هذا المساء ليشكره."
+        },
+        {
+          "en": "template_generated",
+          "ar": "يطبخ أحمد القهوة للعشاء هذا المساء."
+        },
+        {
+          "en": "template_generated",
+          "ar": "اتصل جون بـهناء هذا المساء ليشكره."
+        },
+        {
+          "en": "template_generated",
+          "ar": "سافر سارة من لندن إلى تورنتو غدا."
+        },
+        {
+          "en": "template_generated",
+          "ar": "كُتبت قصيدة علي اليوم في لندن."
+        },
+        {
+          "en": "template_generated",
+          "ar": "يعاني أحمد من ارتفاع ضغط الدم منذ 20 أيام."
+        },
+        {
+          "en": "template_generated",
+          "ar": "سافر ليلى من لندن إلى روما هذا المساء."
+        },
+        {
+          "en": "template_generated",
+          "ar": "سألتقي بـسارة أمس في الرياض."
+        },
+        {
+          "en": "template_generated",
+          "ar": "نما اقتصاد إيطاليا بنسبة 38 بالمئة هذا العام."
+        }
+      ],
+      "arabic_content_pct": 100.0,
+      "english_content_pct": 100.0,
+      "encoding_issues": [
+        "No encoding issues detected"
+      ],
+      "encoding_notes": "Dataset contains 5640 sentence pairs. Arabic content detected in 100.0% of AR column samples. English content detected in 100.0% of EN column samples."
+    },
+    "dataset_id": 3,
+    "created_at": "2026-07-17T22:11:03.862703",
+    "_id": "4"
+  },
+  {
+    "type": "exploration",
+    "step": 1,
+    "report": {
+      "shape": {
+        "rows": 2000,
+        "cols": 5
+      },
+      "columns": [
+        "id",
+        "en",
+        "ar",
+        "domain",
+        "source"
+      ],
+      "dtypes": {
+        "id": "int64",
+        "en": "str",
+        "ar": "str",
+        "domain": "str",
+        "source": "str"
+      },
+      "summary": {
+        "en": {
+          "non_null": 2000,
+          "null_count": 0,
+          "unique": 2000,
+          "avg_length_chars": 52.9455,
+          "avg_length_tokens": 9.21
+        },
+        "ar": {
+          "non_null": 2000,
+          "null_count": 0,
+          "unique": 2000,
+          "avg_length_chars": 39.818,
+          "avg_length_tokens": 7.639
+        }
+      },
+      "sample_pairs": [
+        {
+          "en": "We apologize for the delay in shipping your a phone.",
+          "ar": "نعتذر عن التأخير في شحن هاتف الخاص بك."
+        },
+        {
+          "en": "We apologize for the delay in shipping your a laptop.",
+          "ar": "نعتذر عن التأخير في شحن حاسوب محمول الخاص بك."
+        },
+        {
+          "en": "Your refund of 20 dollars has been processed this evening.",
+          "ar": "تمت معالجة استرداد مبلغ 20 دولار هذا المساء."
+        },
+        {
+          "en": "Shipping to Paris usually takes 185 days.",
+          "ar": "يستغرق الشحن إلى باريس عادة 185 أيام."
+        },
+        {
+          "en": "David rated the service five stars tomorrow.",
+          "ar": "قيّم ديفيد الخدمة بخمس نجوم غدا."
+        },
+        {
+          "en": "Can I return a chair for a refund?",
+          "ar": "هل يمكنني إرجاع كرسي لاسترداد المبلغ؟"
+        },
+        {
+          "en": "Omar contacted customer support about a missing item this evening.",
+          "ar": "تواصل عمر مع خدمة العملاء بخصوص منتج مفقود هذا المساء."
+        },
+        {
+          "en": "a jacket is currently out of stock in Paris.",
+          "ar": "سترة غير متوفر حاليا في باريس."
+        },
+        {
+          "en": "headphones is currently out of stock in London.",
+          "ar": "سماعات غير متوفر حاليا في لندن."
+        },
+        {
+          "en": "We apologize for the delay in shipping your a book.",
+          "ar": "نعتذر عن التأخير في شحن كتاب الخاص بك."
+        }
+      ],
+      "arabic_content_pct": 100.0,
+      "english_content_pct": 100.0,
+      "encoding_issues": [
+        "No encoding issues detected"
+      ],
+      "encoding_notes": "Dataset contains 2000 sentence pairs. Arabic content detected in 100.0% of AR column samples. English content detected in 100.0% of EN column samples."
+    },
+    "dataset_id": 4,
+    "created_at": "2026-07-17T23:07:10.627746",
+    "_id": "5"
+  },
+  {
+    "type": "preprocessing_complete",
+    "preprocessing_run_id": 2,
+    "step_reports": {
+      "step_1_exploration": {
+        "shape": {
+          "rows": 2000,
+          "cols": 5
+        },
+        "columns": [
+          "id",
+          "en",
+          "ar",
+          "domain",
+          "source"
+        ],
+        "dtypes": {
+          "id": "int64",
+          "en": "str",
+          "ar": "str",
+          "domain": "str",
+          "source": "str"
+        },
+        "summary": {
+          "en": {
+            "non_null": 2000,
+            "null_count": 0,
+            "unique": 2000,
+            "avg_length_chars": 52.9455,
+            "avg_length_tokens": 9.21
+          },
+          "ar": {
+            "non_null": 2000,
+            "null_count": 0,
+            "unique": 2000,
+            "avg_length_chars": 39.818,
+            "avg_length_tokens": 7.639
+          }
+        },
+        "sample_pairs": [
+          {
+            "en": "We apologize for the delay in shipping your a phone.",
+            "ar": "نعتذر عن التأخير في شحن هاتف الخاص بك."
+          },
+          {
+            "en": "We apologize for the delay in shipping your a laptop.",
+            "ar": "نعتذر عن التأخير في شحن حاسوب محمول الخاص بك."
+          },
+          {
+            "en": "Your refund of 20 dollars has been processed this evening.",
+            "ar": "تمت معالجة استرداد مبلغ 20 دولار هذا المساء."
+          },
+          {
+            "en": "Shipping to Paris usually takes 185 days.",
+            "ar": "يستغرق الشحن إلى باريس عادة 185 أيام."
+          },
+          {
+            "en": "David rated the service five stars tomorrow.",
+            "ar": "قيّم ديفيد الخدمة بخمس نجوم غدا."
+          },
+          {
+            "en": "Can I return a chair for a refund?",
+            "ar": "هل يمكنني إرجاع كرسي لاسترداد المبلغ؟"
+          },
+          {
+            "en": "Omar contacted customer support about a missing item this evening.",
+            "ar": "تواصل عمر مع خدمة العملاء بخصوص منتج مفقود هذا المساء."
+          },
+          {
+            "en": "a jacket is currently out of stock in Paris.",
+            "ar": "سترة غير متوفر حاليا في باريس."
+          },
+          {
+            "en": "headphones is currently out of stock in London.",
+            "ar": "سماعات غير متوفر حاليا في لندن."
+          },
+          {
+            "en": "We apologize for the delay in shipping your a book.",
+            "ar": "نعتذر عن التأخير في شحن كتاب الخاص بك."
+          }
+        ],
+        "arabic_content_pct": 100.0,
+        "english_content_pct": 100.0,
+        "encoding_issues": [
+          "No encoding issues detected"
+        ],
+        "encoding_notes": "Dataset contains 2000 sentence pairs. Arabic content detected in 100.0% of AR column samples. English content detected in 100.0% of EN column samples."
+      },
+      "step_2_duplicates": {
+        "total_rows": 2000,
+        "duplicates_full_pair": {
+          "count": 0,
+          "percentage": 0.0,
+          "description": "Exact same EN+AR sentence pair appears more than once"
+        },
+        "duplicates_en_only": {
+          "count": 0,
+          "percentage": 0.0,
+          "description": "Same English sentence with different Arabic translations"
+        },
+        "duplicates_ar_only": {
+          "count": 0,
+          "percentage": 0.0,
+          "description": "Same Arabic sentence with different English sources"
+        },
+        "duplicate_samples": [],
+        "removed_count": 0,
+        "remaining_rows": 2000,
+        "action_taken": "Removed 0 exact duplicate pairs (kept first occurrence). Dataset reduced from 2000 to 2000 rows."
+      },
+      "step_3_missing_values": {
+        "total_rows": 2000,
+        "columns": {
+          "id": {
+            "null_count": 0,
+            "empty_string_count": 0,
+            "whitespace_only_count": 0,
+            "total_missing": 0,
+            "missing_percentage": 0.0
+          },
+          "en": {
+            "null_count": 0,
+            "empty_string_count": 0,
+            "whitespace_only_count": 0,
+            "total_missing": 0,
+            "missing_percentage": 0.0
+          },
+          "ar": {
+            "null_count": 0,
+            "empty_string_count": 0,
+            "whitespace_only_count": 0,
+            "total_missing": 0,
+            "missing_percentage": 0.0
+          },
+          "domain": {
+            "null_count": 0,
+            "empty_string_count": 0,
+            "whitespace_only_count": 0,
+            "total_missing": 0,
+            "missing_percentage": 0.0
+          },
+          "source": {
+            "null_count": 0,
+            "empty_string_count": 0,
+            "whitespace_only_count": 0,
+            "total_missing": 0,
+            "missing_percentage": 0.0
+          }
+        },
+        "summary": {
+          "en_missing": 0,
+          "ar_missing": 0,
+          "en_missing_pct": 0.0,
+          "ar_missing_pct": 0.0,
+          "recommendation": "No missing values detected. No action needed."
+        },
+        "removed_count": 0,
+        "remaining_rows": 2000,
+        "strategy_used": "drop",
+        "action_taken": "Dropped 0 rows with missing/empty EN or AR text. Dataset reduced from 2000 to 2000 rows."
+      },
+      "step_4_outliers": {
+        "total_rows": 2000,
+        "length_stats": {
+          "en_tokens": {
+            "mean": 9.21,
+            "std": 1.16,
+            "min": 5.0,
+            "max": 12.0,
+            "median": 10.0,
+            "q25": 9.0,
+            "q75": 10.0
+          },
+          "ar_tokens": {
+            "mean": 7.64,
+            "std": 1.27,
+            "min": 3.0,
+            "max": 12.0,
+            "median": 8.0,
+            "q25": 7.0,
+            "q75": 8.0
+          },
+          "en_chars": {
+            "mean": 44.74,
+            "std": 6.84,
+            "min": 25.0,
+            "max": 60.0,
+            "median": 45.0,
+            "q25": 39.0,
+            "q75": 50.0
+          },
+          "ar_chars": {
+            "mean": 33.18,
+            "std": 6.51,
+            "min": 12.0,
+            "max": 54.0,
+            "median": 32.0,
+            "q25": 30.0,
+            "q75": 37.0
+          },
+          "length_ratio": {
+            "mean": 1.22,
+            "std": 0.16,
+            "min": 0.9,
+            "max": 1.67,
+            "median": 1.25,
+            "q25": 1.11,
+            "q75": 1.29
+          }
+        },
+        "outliers": {
+          "zscore": {
+            "count": 9,
+            "percentage": 0.45
+          },
+          "iqr": {
+            "count": 499,
+            "percentage": 24.95
+          },
+          "length_ratio_filter": {
+            "count": 0,
+            "percentage": 0.0,
+            "threshold": "[0.3, 3.0]"
+          },
+          "combined": {
+            "count": 499,
+            "percentage": 24.95
+          }
+        },
+        "outlier_samples": [
+          {
+            "en": "Shipping to Paris usually takes 185 days.",
+            "ar": "يستغرق الشحن إلى باريس عادة 185 أيام.",
+            "en_tokens": 7,
+            "ar_tokens": 7,
+            "length_ratio": 1.0
+          },
+          {
+            "en": "David rated the service five stars tomorrow.",
+            "ar": "قيّم ديفيد الخدمة بخمس نجوم غدا.",
+            "en_tokens": 7,
+            "ar_tokens": 6,
+            "length_ratio": 1.1666666666666667
+          },
+          {
+            "en": "Omar contacted customer support about a missing item this evening.",
+            "ar": "تواصل عمر مع خدمة العملاء بخصوص منتج مفقود هذا المساء.",
+            "en_tokens": 10,
+            "ar_tokens": 10,
+            "length_ratio": 1.0
+          },
+          {
+            "en": "Omar contacted customer support about a wrong order this week.",
+            "ar": "تواصل عمر مع خدمة العملاء بخصوص طلب خاطئ هذا الأسبوع.",
+            "en_tokens": 10,
+            "ar_tokens": 10,
+            "length_ratio": 1.0
+          },
+          {
+            "en": "Your order will arrive today.",
+            "ar": "سيصل طلبك اليوم.",
+            "en_tokens": 5,
+            "ar_tokens": 3,
+            "length_ratio": 1.6666666666666667
+          }
+        ],
+        "removed_count": 499,
+        "remaining_rows": 1501,
+        "outlier_pct": 24.95,
+        "action_taken": "Removed 499 outlier pairs using Z-score + IQR + length-ratio filters. Additionally capped at 95th percentile. Dataset reduced from 2000 to 1501 rows."
+      },
+      "step_5_charts": [
+        {
+          "name": "English Length Histogram",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_1_en_length_hist.png",
+          "filename": "chart_1_en_length_hist.png"
+        },
+        {
+          "name": "Arabic Length Histogram",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_2_ar_length_hist.png",
+          "filename": "chart_2_ar_length_hist.png"
+        },
+        {
+          "name": "KDE Overlay EN vs AR",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_3_kde_overlay.png",
+          "filename": "chart_3_kde_overlay.png"
+        },
+        {
+          "name": "Scatter EN vs AR Lengths",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_4_scatter_lengths.png",
+          "filename": "chart_4_scatter_lengths.png"
+        },
+        {
+          "name": "Boxplot Lengths",
+          "path": null,
+          "error": "Axes.boxplot() got an unexpected keyword argument 'labels'"
+        },
+        {
+          "name": "Correlation Heatmap",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_6_correlation_heatmap.png",
+          "filename": "chart_6_correlation_heatmap.png"
+        },
+        {
+          "name": "Length Category Distribution",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_7_length_categories.png",
+          "filename": "chart_7_length_categories.png"
+        }
+      ],
+      "step_6_imbalance": {
+        "total_rows": 1501,
+        "is_applicable": true,
+        "label_column": "length_category",
+        "note": "No domain labels found. Created synthetic \"length_category\" (very_short/short/medium/long/very_long) based on English sentence token count to demonstrate imbalance analysis technique.",
+        "is_synthetic": true,
+        "class_distribution": {
+          "short": {
+            "count": 1501,
+            "percentage": 100.0
+          }
+        },
+        "is_imbalanced": "False",
+        "imbalance_ratio": 1.0,
+        "majority_class": "short",
+        "minority_class": "short",
+        "majority_pct": 100.0,
+        "minority_pct": 100.0,
+        "strategy": "none",
+        "distribution_before": {
+          "short": {
+            "count": 1501,
+            "percentage": 100.0
+          }
+        },
+        "action_taken": "Dataset is balanced. No action needed.",
+        "distribution_after": {
+          "short": {
+            "count": 1501,
+            "percentage": 100.0
+          }
+        }
+      }
+    },
+    "dataset_id": 4,
+    "created_at": "2026-07-17T23:07:30.910187",
+    "_id": "6"
+  },
+  {
+    "type": "exploration",
+    "step": 1,
+    "report": {
+      "shape": {
+        "rows": 5640,
+        "cols": 5
+      },
+      "columns": [
+        "id",
+        "en",
+        "ar",
+        "domain",
+        "source"
+      ],
+      "dtypes": {
+        "id": "int64",
+        "en": "str",
+        "ar": "str",
+        "domain": "str",
+        "source": "str"
+      },
+      "summary": {
+        "en": {
+          "non_null": 5640,
+          "null_count": 0,
+          "unique": 5640,
+          "avg_length_chars": 46.04255319148936,
+          "avg_length_tokens": 8.24131205673759
+        },
+        "ar": {
+          "non_null": 5640,
+          "null_count": 0,
+          "unique": 5640,
+          "avg_length_chars": 35.51843971631206,
+          "avg_length_tokens": 6.615425531914894
+        }
+      },
+      "sample_pairs": [
+        {
+          "en": "I will meet John last year in Rome.",
+          "ar": "سألتقي بـجون العام الماضي في روما."
+        },
+        {
+          "en": "Noor called David this evening to say thank you.",
+          "ar": "اتصل نور بـديفيد هذا المساء ليشكره."
+        },
+        {
+          "en": "Ahmed is cooking coffee for dinner this evening.",
+          "ar": "يطبخ أحمد القهوة للعشاء هذا المساء."
+        },
+        {
+          "en": "John called Hana this evening to say thank you.",
+          "ar": "اتصل جون بـهناء هذا المساء ليشكره."
+        },
+        {
+          "en": "Sara traveled from London to Toronto tomorrow.",
+          "ar": "سافر سارة من لندن إلى تورنتو غدا."
+        },
+        {
+          "en": "Ali's poem was written today in London.",
+          "ar": "كُتبت قصيدة علي اليوم في لندن."
+        },
+        {
+          "en": "Ahmed has been suffering from high blood pressure for 20 days.",
+          "ar": "يعاني أحمد من ارتفاع ضغط الدم منذ 20 أيام."
+        },
+        {
+          "en": "Layla traveled from London to Rome this evening.",
+          "ar": "سافر ليلى من لندن إلى روما هذا المساء."
+        },
+        {
+          "en": "I will meet Sara yesterday in Riyadh.",
+          "ar": "سألتقي بـسارة أمس في الرياض."
+        },
+        {
+          "en": "The economy of Italy grew by 38 percent this year.",
+          "ar": "نما اقتصاد إيطاليا بنسبة 38 بالمئة هذا العام."
+        }
+      ],
+      "arabic_content_pct": 100.0,
+      "english_content_pct": 100.0,
+      "encoding_issues": [
+        "No encoding issues detected"
+      ],
+      "encoding_notes": "Dataset contains 5640 sentence pairs. Arabic content detected in 100.0% of AR column samples. English content detected in 100.0% of EN column samples."
+    },
+    "dataset_id": 5,
+    "created_at": "2026-07-18T20:08:30.406967",
+    "_id": "7"
+  },
+  {
+    "type": "exploration",
+    "step": 1,
+    "report": {
+      "shape": {
+        "rows": 5640,
+        "cols": 5
+      },
+      "columns": [
+        "id",
+        "en",
+        "ar",
+        "domain",
+        "source"
+      ],
+      "dtypes": {
+        "id": "int64",
+        "en": "str",
+        "ar": "str",
+        "domain": "str",
+        "source": "str"
+      },
+      "summary": {
+        "en": {
+          "non_null": 5640,
+          "null_count": 0,
+          "unique": 5640,
+          "avg_length_chars": 46.04255319148936,
+          "avg_length_tokens": 8.24131205673759
+        },
+        "ar": {
+          "non_null": 5640,
+          "null_count": 0,
+          "unique": 5640,
+          "avg_length_chars": 35.51843971631206,
+          "avg_length_tokens": 6.615425531914894
+        }
+      },
+      "sample_pairs": [
+        {
+          "en": "I will meet John last year in Rome.",
+          "ar": "سألتقي بـجون العام الماضي في روما."
+        },
+        {
+          "en": "Noor called David this evening to say thank you.",
+          "ar": "اتصل نور بـديفيد هذا المساء ليشكره."
+        },
+        {
+          "en": "Ahmed is cooking coffee for dinner this evening.",
+          "ar": "يطبخ أحمد القهوة للعشاء هذا المساء."
+        },
+        {
+          "en": "John called Hana this evening to say thank you.",
+          "ar": "اتصل جون بـهناء هذا المساء ليشكره."
+        },
+        {
+          "en": "Sara traveled from London to Toronto tomorrow.",
+          "ar": "سافر سارة من لندن إلى تورنتو غدا."
+        },
+        {
+          "en": "Ali's poem was written today in London.",
+          "ar": "كُتبت قصيدة علي اليوم في لندن."
+        },
+        {
+          "en": "Ahmed has been suffering from high blood pressure for 20 days.",
+          "ar": "يعاني أحمد من ارتفاع ضغط الدم منذ 20 أيام."
+        },
+        {
+          "en": "Layla traveled from London to Rome this evening.",
+          "ar": "سافر ليلى من لندن إلى روما هذا المساء."
+        },
+        {
+          "en": "I will meet Sara yesterday in Riyadh.",
+          "ar": "سألتقي بـسارة أمس في الرياض."
+        },
+        {
+          "en": "The economy of Italy grew by 38 percent this year.",
+          "ar": "نما اقتصاد إيطاليا بنسبة 38 بالمئة هذا العام."
+        }
+      ],
+      "arabic_content_pct": 100.0,
+      "english_content_pct": 100.0,
+      "encoding_issues": [
+        "No encoding issues detected"
+      ],
+      "encoding_notes": "Dataset contains 5640 sentence pairs. Arabic content detected in 100.0% of AR column samples. English content detected in 100.0% of EN column samples."
+    },
+    "dataset_id": 6,
+    "created_at": "2026-07-18T20:08:33.766507",
+    "_id": "8"
+  },
+  {
+    "type": "preprocessing_complete",
+    "preprocessing_run_id": 3,
+    "step_reports": {
+      "step_1_exploration": {
+        "shape": {
+          "rows": 5640,
+          "cols": 5
+        },
+        "columns": [
+          "id",
+          "en",
+          "ar",
+          "domain",
+          "source"
+        ],
+        "dtypes": {
+          "id": "int64",
+          "en": "str",
+          "ar": "str",
+          "domain": "str",
+          "source": "str"
+        },
+        "summary": {
+          "en": {
+            "non_null": 5640,
+            "null_count": 0,
+            "unique": 5640,
+            "avg_length_chars": 46.04255319148936,
+            "avg_length_tokens": 8.24131205673759
+          },
+          "ar": {
+            "non_null": 5640,
+            "null_count": 0,
+            "unique": 5640,
+            "avg_length_chars": 35.51843971631206,
+            "avg_length_tokens": 6.615425531914894
+          }
+        },
+        "sample_pairs": [
+          {
+            "en": "I will meet John last year in Rome.",
+            "ar": "سألتقي بـجون العام الماضي في روما."
+          },
+          {
+            "en": "Noor called David this evening to say thank you.",
+            "ar": "اتصل نور بـديفيد هذا المساء ليشكره."
+          },
+          {
+            "en": "Ahmed is cooking coffee for dinner this evening.",
+            "ar": "يطبخ أحمد القهوة للعشاء هذا المساء."
+          },
+          {
+            "en": "John called Hana this evening to say thank you.",
+            "ar": "اتصل جون بـهناء هذا المساء ليشكره."
+          },
+          {
+            "en": "Sara traveled from London to Toronto tomorrow.",
+            "ar": "سافر سارة من لندن إلى تورنتو غدا."
+          },
+          {
+            "en": "Ali's poem was written today in London.",
+            "ar": "كُتبت قصيدة علي اليوم في لندن."
+          },
+          {
+            "en": "Ahmed has been suffering from high blood pressure for 20 days.",
+            "ar": "يعاني أحمد من ارتفاع ضغط الدم منذ 20 أيام."
+          },
+          {
+            "en": "Layla traveled from London to Rome this evening.",
+            "ar": "سافر ليلى من لندن إلى روما هذا المساء."
+          },
+          {
+            "en": "I will meet Sara yesterday in Riyadh.",
+            "ar": "سألتقي بـسارة أمس في الرياض."
+          },
+          {
+            "en": "The economy of Italy grew by 38 percent this year.",
+            "ar": "نما اقتصاد إيطاليا بنسبة 38 بالمئة هذا العام."
+          }
+        ],
+        "arabic_content_pct": 100.0,
+        "english_content_pct": 100.0,
+        "encoding_issues": [
+          "No encoding issues detected"
+        ],
+        "encoding_notes": "Dataset contains 5640 sentence pairs. Arabic content detected in 100.0% of AR column samples. English content detected in 100.0% of EN column samples."
+      },
+      "step_2_duplicates": {
+        "total_rows": 5640,
+        "duplicates_full_pair": {
+          "count": 0,
+          "percentage": 0.0,
+          "description": "Exact same EN+AR sentence pair appears more than once"
+        },
+        "duplicates_en_only": {
+          "count": 0,
+          "percentage": 0.0,
+          "description": "Same English sentence with different Arabic translations"
+        },
+        "duplicates_ar_only": {
+          "count": 0,
+          "percentage": 0.0,
+          "description": "Same Arabic sentence with different English sources"
+        },
+        "duplicate_samples": [],
+        "removed_count": 0,
+        "remaining_rows": 5640,
+        "action_taken": "Removed 0 exact duplicate pairs (kept first occurrence). Dataset reduced from 5640 to 5640 rows."
+      },
+      "step_3_missing_values": {
+        "total_rows": 5640,
+        "columns": {
+          "id": {
+            "null_count": 0,
+            "empty_string_count": 0,
+            "whitespace_only_count": 0,
+            "total_missing": 0,
+            "missing_percentage": 0.0
+          },
+          "en": {
+            "null_count": 0,
+            "empty_string_count": 0,
+            "whitespace_only_count": 0,
+            "total_missing": 0,
+            "missing_percentage": 0.0
+          },
+          "ar": {
+            "null_count": 0,
+            "empty_string_count": 0,
+            "whitespace_only_count": 0,
+            "total_missing": 0,
+            "missing_percentage": 0.0
+          },
+          "domain": {
+            "null_count": 0,
+            "empty_string_count": 0,
+            "whitespace_only_count": 0,
+            "total_missing": 0,
+            "missing_percentage": 0.0
+          },
+          "source": {
+            "null_count": 0,
+            "empty_string_count": 0,
+            "whitespace_only_count": 0,
+            "total_missing": 0,
+            "missing_percentage": 0.0
+          }
+        },
+        "summary": {
+          "en_missing": 0,
+          "ar_missing": 0,
+          "en_missing_pct": 0.0,
+          "ar_missing_pct": 0.0,
+          "recommendation": "No missing values detected. No action needed."
+        },
+        "removed_count": 0,
+        "remaining_rows": 5640,
+        "strategy_used": "drop",
+        "action_taken": "Dropped 0 rows with missing/empty EN or AR text. Dataset reduced from 5640 to 5640 rows."
+      },
+      "step_4_outliers": {
+        "total_rows": 5640,
+        "length_stats": {
+          "en_tokens": {
+            "mean": 8.24,
+            "std": 1.24,
+            "min": 3.0,
+            "max": 13.0,
+            "median": 8.0,
+            "q25": 7.0,
+            "q75": 9.0
+          },
+          "ar_tokens": {
+            "mean": 6.62,
+            "std": 1.1,
+            "min": 2.0,
+            "max": 12.0,
+            "median": 7.0,
+            "q25": 6.0,
+            "q75": 7.0
+          },
+          "en_chars": {
+            "mean": 38.8,
+            "std": 6.0,
+            "min": 15.0,
+            "max": 64.0,
+            "median": 39.0,
+            "q25": 36.0,
+            "q75": 42.0
+          },
+          "ar_chars": {
+            "mean": 29.9,
+            "std": 5.78,
+            "min": 7.0,
+            "max": 64.0,
+            "median": 29.0,
+            "q25": 26.0,
+            "q75": 33.0
+          },
+          "length_ratio": {
+            "mean": 1.26,
+            "std": 0.15,
+            "min": 0.71,
+            "max": 2.0,
+            "median": 1.25,
+            "q25": 1.17,
+            "q75": 1.33
+          }
+        },
+        "outliers": {
+          "zscore": {
+            "count": 52,
+            "percentage": 0.92
+          },
+          "iqr": {
+            "count": 248,
+            "percentage": 4.4
+          },
+          "length_ratio_filter": {
+            "count": 0,
+            "percentage": 0.0,
+            "threshold": "[0.3, 3.0]"
+          },
+          "combined": {
+            "count": 254,
+            "percentage": 4.5
+          }
+        },
+        "outlier_samples": [
+          {
+            "en": "Ahmed has been suffering from high blood pressure for 20 days.",
+            "ar": "يعاني أحمد من ارتفاع ضغط الدم منذ 20 أيام.",
+            "en_tokens": 11,
+            "ar_tokens": 9,
+            "length_ratio": 1.2222222222222223
+          },
+          {
+            "en": "The clinic offers physical therapy for patients with a headache.",
+            "ar": "تقدم العيادة العلاج الطبيعي للمرضى الذين يعانون من الصداع.",
+            "en_tokens": 10,
+            "ar_tokens": 9,
+            "length_ratio": 1.1111111111111112
+          },
+          {
+            "en": "Doctors advise regular exercise to reduce high blood pressure.",
+            "ar": "ينصح الأطباء بـممارسة الرياضة بانتظام لتقليل ارتفاع ضغط الدم.",
+            "en_tokens": 9,
+            "ar_tokens": 9,
+            "length_ratio": 1.0
+          },
+          {
+            "en": "The doctor recommended a change in diet for high blood pressure.",
+            "ar": "أوصى الطبيب بـتغيير النظام الغذائي لعلاج ارتفاع ضغط الدم.",
+            "en_tokens": 11,
+            "ar_tokens": 9,
+            "length_ratio": 1.2222222222222223
+          },
+          {
+            "en": "Ali has been suffering from high blood pressure for 5 days.",
+            "ar": "يعاني علي من ارتفاع ضغط الدم منذ 5 أيام.",
+            "en_tokens": 11,
+            "ar_tokens": 9,
+            "length_ratio": 1.2222222222222223
+          }
+        ],
+        "removed_count": 264,
+        "remaining_rows": 5376,
+        "outlier_pct": 4.68,
+        "action_taken": "Removed 264 outlier pairs using Z-score + IQR + length-ratio filters. Additionally capped at 95th percentile. Dataset reduced from 5640 to 5376 rows."
+      },
+      "step_5_charts": [
+        {
+          "name": "English Length Histogram",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_1_en_length_hist.png",
+          "filename": "chart_1_en_length_hist.png"
+        },
+        {
+          "name": "Arabic Length Histogram",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_2_ar_length_hist.png",
+          "filename": "chart_2_ar_length_hist.png"
+        },
+        {
+          "name": "KDE Overlay EN vs AR",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_3_kde_overlay.png",
+          "filename": "chart_3_kde_overlay.png"
+        },
+        {
+          "name": "Scatter EN vs AR Lengths",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_4_scatter_lengths.png",
+          "filename": "chart_4_scatter_lengths.png"
+        },
+        {
+          "name": "Boxplot Lengths",
+          "path": null,
+          "error": "Axes.boxplot() got an unexpected keyword argument 'labels'"
+        },
+        {
+          "name": "Correlation Heatmap",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_6_correlation_heatmap.png",
+          "filename": "chart_6_correlation_heatmap.png"
+        },
+        {
+          "name": "Length Category Distribution",
+          "path": "E:\\AMIT AI\\Machine Translator from English to Arabic\\charts\\chart_7_length_categories.png",
+          "filename": "chart_7_length_categories.png"
+        }
+      ],
+      "step_6_imbalance": {
+        "total_rows": 5376,
+        "is_applicable": true,
+        "label_column": "length_category",
+        "note": "No domain labels found. Created synthetic \"length_category\" (very_short/short/medium/long/very_long) based on English sentence token count to demonstrate imbalance analysis technique.",
+        "is_synthetic": true,
+        "class_distribution": {
+          "short": {
+            "count": 5374,
+            "percentage": 99.96
+          },
+          "very_short": {
+            "count": 2,
+            "percentage": 0.04
+          }
+        },
+        "is_imbalanced": "True",
+        "imbalance_ratio": 2687.0,
+        "majority_class": "short",
+        "minority_class": "very_short",
+        "majority_pct": 99.96,
+        "minority_pct": 0.04,
+        "strategy": "none",
+        "distribution_before": {
+          "short": {
+            "count": 5374,
+            "percentage": 99.96
+          },
+          "very_short": {
+            "count": 2,
+            "percentage": 0.04
+          }
+        },
+        "action_taken": "Imbalance detected but handling marked as N/A. For pure sequence-to-sequence translation, class balancing is not applicable. This applies only to auxiliary labeled sub-tasks.",
+        "distribution_after": {
+          "short": {
+            "count": 5374,
+            "percentage": 99.96
+          },
+          "very_short": {
+            "count": 2,
+            "percentage": 0.04
+          }
+        }
+      }
+    },
+    "dataset_id": 5,
+    "created_at": "2026-07-18T20:09:55.206043",
+    "_id": "9"
+  }
+]
