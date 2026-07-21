@@ -144,7 +144,7 @@ def download_sample_dataset(request):
             lang_pair='ar-en',
             max_samples=int(max_samples)
         )
-
+        df = df.fillna('')
 
         # Save to disk
         save_path = os.path.join(settings.DATA_DIR, 'opus_100_en_ar.csv')
@@ -157,13 +157,13 @@ def download_sample_dataset(request):
             description=f'OPUS-100 English-Arabic parallel corpus ({len(df)} pairs)',
             file_type='csv',
             total_pairs=len(df),
-            mongo_collection='dataset_opus_100_en_ar_raw',
+            mongo_collection=f'dataset_opus_100_{int(max_samples)}_raw',
             status='uploaded',
         )
 
 
         # Store in MongoDB
-        records = df.to_dict(orient='records')
+        records = df[['en', 'ar']].to_dict(orient='records')
         stored = MongoDBClient.store_raw_dataset(dataset.mongo_collection, records)
 
         # Run exploration
