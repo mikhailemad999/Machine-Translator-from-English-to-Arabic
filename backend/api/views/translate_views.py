@@ -79,11 +79,16 @@ def translate_batch(request):
     if not isinstance(texts, list) or not texts:
         return Response({'error': 'texts must be a non-empty list'}, status=status.HTTP_400_BAD_REQUEST)
 
+    # Sanitize elements to valid strings
+    clean_texts = [str(t) for t in texts if t is not None and str(t).strip() != '']
+    if not clean_texts:
+        return Response({'error': 'texts array contains no valid text strings'}, status=status.HTTP_400_BAD_REQUEST)
+
     try:
         from ml.inference import translate_batch as do_batch
 
         translations = do_batch(
-            texts=texts,
+            texts=clean_texts,
             model_path=model_path if model_path else None
         )
 

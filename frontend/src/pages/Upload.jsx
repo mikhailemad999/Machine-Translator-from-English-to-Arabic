@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { uploadDataset, downloadSampleDataset } from '../services/api';
 
+/**
+ * Upload component handling local file selection (drag & drop),
+ * specifying column names, and triggering dataset upload to backend APIs.
+ * Also supports downloading and importing sample datasets.
+ */
 function Upload() {
   const [file, setFile] = useState(null);
   const [name, setName] = useState('');

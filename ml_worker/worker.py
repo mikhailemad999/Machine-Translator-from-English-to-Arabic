@@ -74,6 +74,7 @@ def start_training():
         return jsonify({'error': f'Job {job_id} already running'}), 409
 
     def run_training():
+        """Target function for background thread to run training process using ml.trainer.train_model."""
         try:
             df = pd.read_csv(dataset_path)
             results = train_model(

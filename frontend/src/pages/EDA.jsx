@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { listCharts, getChartUrl, listDatasets, getEdaReport } from '../services/api';
 
+/**
+ * EDA component rendering the exploratory data analysis charts, 
+ * length distributions, and token correlation heatmaps.
+ */
 function EDA() {
   const [charts, setCharts] = useState([]);
   const [datasets, setDatasets] = useState([]);
@@ -101,9 +105,8 @@ function EDA() {
                 {chart.filename.replace(/chart_\d+_/, '').replace(/_/g, ' ').replace('.png', '').toUpperCase()}
               </div>
               <img
-                src={getChartUrl(chart.filename)}
+                src={getChartUrl(chart.filename, edaReport?.updated_at || Date.now())}
                 alt={chart.filename}
-                loading="lazy"
               />
             </div>
           ))}

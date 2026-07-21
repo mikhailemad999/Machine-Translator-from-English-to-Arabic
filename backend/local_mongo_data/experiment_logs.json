@@ -82,5 +82,17 @@
     "training_job_id": 5,
     "timestamp": "2026-07-17T23:15:19.388087",
     "_id": "7"
+  },
+  {
+    "event": "epoch_completed",
+    "epoch": 1,
+    "train_loss": 2.1264,
+    "val_loss": 1.9934,
+    "val_bleu": 17.28,
+    "elapsed_seconds": 204.1,
+    "loss_gap": -0.133,
+    "training_job_id": 6,
+    "timestamp": "2026-07-18T22:10:08.298713",
+    "_id": "8"
   }
 ]

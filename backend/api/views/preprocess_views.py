@@ -134,6 +134,7 @@ def run_preprocessing(request):
 
         # Also save as CSV for training
         cleaned_csv_path = os.path.join(str(settings.DATA_DIR), f'dataset_{dataset.id}_cleaned.csv')
+        os.makedirs(os.path.dirname(cleaned_csv_path), exist_ok=True)
         df[['en', 'ar']].to_csv(cleaned_csv_path, index=False)
 
         # Store full reports in MongoDB for EDA dashboard

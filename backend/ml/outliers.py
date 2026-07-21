@@ -50,7 +50,7 @@ def detect_outliers_zscore(df, column, threshold=3.0):
         Boolean mask of outliers
     """
     values = df[column].replace([np.inf, -np.inf], np.nan).dropna()
-    if len(values) == 0:
+    if len(values) < 2 or values.std() == 0:
         return pd.Series([False] * len(df), index=df.index)
 
     z_scores = np.abs(stats.zscore(values, nan_policy='omit'))

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { listDatasets, runPreprocessing, listPreprocessingRuns } from '../services/api';
 
+/**
+ * Preprocessing component managing dataset pipeline cleaning steps.
+ * Dispatches run preprocessing tasks and lists recent pipeline executions.
+ */
 function Preprocessing() {
   const [datasets, setDatasets] = useState([]);
   const [selectedDs, setSelectedDs] = useState(null);

@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { translateText, translateBatch, getTranslationHistory, listTrainingJobs } from '../services/api';
 
-// Robust CSV RFC-4180 parsing function
+/**
+ * Parses raw CSV string data into a 2D array of rows and columns,
+ * handling double quotes and escaping according to RFC-4180.
+ *
+ * @param {string} text Raw CSV text content.
+ * @returns {Array<Array<string>>} List of parsed rows.
+ */
 function parseCSVText(text) {
   const lines = [];
   let row = [""];
@@ -37,6 +43,10 @@ function parseCSVText(text) {
   return lines;
 }
 
+/**
+ * Translate component serving the interactive text translation playground.
+ * Supports typing single sentences or uploading files for batch translation.
+ */
 function Translate() {
   // Tab control
   const [activeTab, setActiveTab] = useState('single'); // 'single' or 'file'

@@ -47,7 +47,7 @@ def load_dataset(file_path=None, file_obj=None, file_type='csv',
     elif file_path is not None:
         # Detect encoding
         encoding, confidence = detect_file_encoding(file_path)
-        if confidence < 0.5:
+        if not encoding or not confidence or confidence < 0.5:
             encoding = 'utf-8'  # Fallback
 
         if file_type == 'csv':
@@ -135,7 +135,7 @@ def load_dataset(file_path=None, file_obj=None, file_type='csv',
     return df
 
 
-def load_from_huggingface(dataset_name='opus_books', lang_pair='en-ar', max_samples=100000):
+def load_from_huggingface(dataset_name='Helsinki-NLP/opus-100', lang_pair='ar-en', max_samples=100000):
     """
     Load dataset from HuggingFace datasets library.
 
@@ -162,7 +162,7 @@ def load_from_huggingface(dataset_name='opus_books', lang_pair='en-ar', max_samp
                     'ar': translation.get('ar', '')
                 })
 
-        return pd.DataFrame(records)
+        return pd.DataFrame(records, columns=['en', 'ar'])
     except Exception as e:
         raise RuntimeError(f"Failed to load from HuggingFace: {str(e)}")
 
@@ -171,7 +171,15 @@ def explore_dataset(df):
     """
     Step 1: Explore the loaded dataset.
 
-    Returns a comprehensive report dictionary.
+    Performs basic shape analysis, summary statistics (non-null counts, averages, 
+    unique ratios), checks for encoding errors, and measures language percentages.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame containing 'en' and 'ar' columns.
+
+    Returns:
+        dict: A report dictionary containing shape, columns, dtypes, summary,
+              sample_pairs, and encoding check results.
     """
     report = {}
 

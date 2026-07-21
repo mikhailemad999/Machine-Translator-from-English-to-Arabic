@@ -24,15 +24,18 @@ class TranslationDataset(TorchDataset):
     """PyTorch Dataset for EN-AR sentence pairs."""
 
     def __init__(self, en_texts, ar_texts, tokenizer, max_length=128):
+        """Initialize the PyTorch translation dataset with parallel sentence lists."""
         self.en_texts = en_texts
         self.ar_texts = ar_texts
         self.tokenizer = tokenizer
         self.max_length = max_length
 
     def __len__(self):
+        """Return total number of parallel sentence pairs."""
         return len(self.en_texts)
 
     def __getitem__(self, idx):
+        """Retrieve and tokenize a single parallel sentence pair by index."""
         en = str(self.en_texts[idx])
         ar = str(self.ar_texts[idx])
 
@@ -138,11 +141,44 @@ def train_model(
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Using device: {device}")
 
+    # Resolve directories relative to this file
+    import os
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = current_dir
+    for _ in range(5):
+        if os.path.exists(os.path.join(project_root, 'models')):
+            break
+        parent = os.path.dirname(project_root)
+        if parent == project_root:
+            break
+        project_root = parent
+    models_dir = os.path.join(project_root, 'models')
+
+    def find_local_path(path_str):
+        """
+        Locates the absolute path of a local model directory if it exists,
+        checking the exact path, then the models directory, and then the project root.
+        """
+        if not path_str:
+            return None
+        if os.path.exists(path_str):
+            return os.path.abspath(path_str)
+        for parent_dir in [models_dir, project_root]:
+            candidate = os.path.join(parent_dir, path_str)
+            if os.path.exists(candidate):
+                return os.path.abspath(candidate)
+        return None
+
+    # Resolve model path locally if possible
+    resolved_model = find_local_path('opus-mt-en-ar') if model_name == 'Helsinki-NLP/opus-mt-en-ar' else find_local_path(model_name)
+    resolved_model = resolved_model if resolved_model else model_name
+
     # Load tokenizer and model
-    print(f"Loading model: {model_name}")
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+    print(f"Loading model: {resolved_model}")
+    tokenizer = AutoTokenizer.from_pretrained(resolved_model)
+    model = AutoModelForSeq2SeqLM.from_pretrained(resolved_model)
     model.to(device)
+
 
     # Split data
     train_df, val_df, test_df = split_dataset(df)
@@ -345,6 +381,7 @@ def train_model(
 
     # Save test set for evaluation
     test_path = os.path.join(save_dir, 'test_set.csv')
+    os.makedirs(save_dir, exist_ok=True)
     test_df.to_csv(test_path, index=False)
     results['test_set_path'] = test_path
 

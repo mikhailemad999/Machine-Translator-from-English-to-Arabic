@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { listDatasets, listTrainingJobs } from '../services/api';
 
+/**
+ * Dashboard page rendering the overall project metrics, recent datasets,
+ * and quick workflow navigation buttons.
+ */
 function Dashboard() {
   const [datasets, setDatasets] = useState([]);
   const [jobs, setJobs] = useState([]);

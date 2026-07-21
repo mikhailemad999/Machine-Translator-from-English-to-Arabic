@@ -41,13 +41,15 @@ def load_model(model_path=None, model_name='Helsinki-NLP/opus-mt-en-ar'):
     # Normalize/clean model_path
     if isinstance(model_path, str):
         model_path = model_path.strip()
-    if model_path == '':
-        model_path = None
 
     target_path = None
 
     # Helper to check candidates
     def find_existing_path(path_str):
+        """
+        Locates the absolute path of a local model directory if it exists,
+        checking the exact path, then the models directory, and then the project root.
+        """
         if not path_str:
             return None
         if os.path.exists(path_str):
@@ -59,24 +61,29 @@ def load_model(model_path=None, model_name='Helsinki-NLP/opus-mt-en-ar'):
                 return os.path.abspath(candidate)
         return None
 
-    # Check if baseline was explicitly requested
-    is_baseline_requested = model_path in (model_name, 'baseline', 'opus-mt-en-ar')
+    # Check if baseline was explicitly requested (empty string from UI select means baseline)
+    is_baseline_requested = model_path in (model_name, 'baseline', 'opus-mt-en-ar', '')
 
     if is_baseline_requested:
         # Load local base model first
         target_path = find_existing_path('opus-mt-en-ar') or model_name
-    elif model_path:
+    elif model_path is not None:
         # Check if the requested path exists
         target_path = find_existing_path(model_path)
         if not target_path:
             # If specified path not found, fall back to best model, then baseline
             target_path = find_existing_path('best_model') or find_existing_path('opus-mt-en-ar') or model_name
     else:
-        # No path specified: default to best_model, then local base model, then online baseline
+        # model_path is None (not specified): default to best_model, then local base model, then online baseline
         target_path = find_existing_path('best_model') or find_existing_path('opus-mt-en-ar') or model_name
 
+
+    # Normalize paths for robust Windows comparison (case/slashes)
+    norm_target = os.path.normpath(target_path).lower() if target_path else None
+    norm_cached = os.path.normpath(_model_path).lower() if _model_path else None
+
     # Check if already loaded
-    if _model is not None and _model_path == target_path:
+    if _model is not None and norm_cached == norm_target:
         return _model, _tokenizer
 
     # Load
@@ -89,6 +96,7 @@ def load_model(model_path=None, model_name='Helsinki-NLP/opus-mt-en-ar'):
     _model_path = target_path
 
     return _model, _tokenizer
+
 
 
 

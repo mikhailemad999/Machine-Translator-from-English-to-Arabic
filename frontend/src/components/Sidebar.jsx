@@ -19,6 +19,10 @@ const navItems = [
   ]},
 ];
 
+/**
+ * Sidebar component rendering the main navigation sidebar.
+ * Links map to the 8-step pipeline pages.
+ */
 function Sidebar() {
   return (
     <aside className="sidebar">

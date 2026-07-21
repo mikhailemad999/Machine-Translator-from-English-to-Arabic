@@ -64,7 +64,7 @@ def download_dataset():
     # Strategy 2: If we need more data, try opus_books
     if len(records) < MAX_SAMPLES:
         remaining = MAX_SAMPLES - len(records)
-        print(f"[2/2] Trying opus_books for {remaining} more pairs...")
+        print(f"[2/2] Trying opus_books (en-ar) for {remaining} more pairs...")
         try:
             from datasets import load_dataset
             dataset = load_dataset('opus_books', 'en-ar', split='train', trust_remote_code=True)

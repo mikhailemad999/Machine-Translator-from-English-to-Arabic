@@ -35,6 +35,7 @@ class FileBasedDB:
 
     @classmethod
     def _get_base_dir(cls):
+        """Retrieve or initialize the base directory for local JSON files storage."""
         if cls._base_dir is None:
             try:
                 from django.conf import settings
@@ -49,6 +50,7 @@ class FileBasedDB:
 
     @classmethod
     def _get_collection_path(cls, name):
+        """Get the file path corresponding to a collection JSON file."""
         path = cls._get_base_dir() / f"{name}.json"
         if not path.exists():
             path.write_text('[]', encoding='utf-8')
@@ -56,6 +58,7 @@ class FileBasedDB:
 
     @classmethod
     def _read_collection(cls, name):
+        """Load and parse the records list from the specified collection file."""
         path = cls._get_collection_path(name)
         try:
             data = json.loads(path.read_text(encoding='utf-8'))
@@ -65,16 +68,19 @@ class FileBasedDB:
 
     @classmethod
     def _write_collection(cls, name, data):
+        """Write the records list back to the specified collection JSON file."""
         path = cls._get_collection_path(name)
         path.write_text(json.dumps(data, ensure_ascii=False, default=str, indent=2), encoding='utf-8')
 
     @classmethod
     def insert_many(cls, collection_name, records):
+        """Write multiple records to the collection file."""
         cls._write_collection(collection_name, records)
         return len(records)
 
     @classmethod
     def insert_one(cls, collection_name, record):
+        """Append a single record with a mock string ID to the collection file."""
         data = cls._read_collection(collection_name)
         record['_id'] = str(len(data) + 1)
         data.append(record)
@@ -83,6 +89,7 @@ class FileBasedDB:
 
     @classmethod
     def find(cls, collection_name, query=None, limit=None):
+        """Retrieve records from the collection matching the simple query filter dictionary."""
         data = cls._read_collection(collection_name)
         if query:
             data = [d for d in data if all(d.get(k) == v for k, v in query.items())]
@@ -93,6 +100,7 @@ class FileBasedDB:
 
     @classmethod
     def find_one(cls, collection_name, query=None, sort_key=None, sort_desc=True):
+        """Find one record in the collection with optional sorting field."""
         data = cls._read_collection(collection_name)
         if query:
             data = [d for d in data if all(d.get(k) == v for k, v in query.items())]
@@ -104,11 +112,13 @@ class FileBasedDB:
 
     @classmethod
     def drop(cls, collection_name):
+        """Drop the collection by clearing its JSON file contents to an empty array."""
         path = cls._get_collection_path(collection_name)
         path.write_text('[]', encoding='utf-8')
 
     @classmethod
     def count(cls, collection_name, query=None):
+        """Count the number of items in a JSON collection file."""
         data = cls._read_collection(collection_name)
         if query:
             data = [d for d in data if all(d.get(k) == v for k, v in query.items())]
@@ -128,6 +138,7 @@ class MongoDBClient:
 
     @classmethod
     def _should_fallback(cls):
+        """Detect whether we should fall back to JSON file-based storage."""
         if cls._use_fallback is None:
             if _get_fallback_mode():
                 cls._use_fallback = True
@@ -151,12 +162,14 @@ class MongoDBClient:
 
     @classmethod
     def get_client(cls):
+        """Return the underlying pymongo MongoClient instance, or None if in fallback mode."""
         if cls._should_fallback():
             return None
         return cls._client
 
     @classmethod
     def get_db(cls):
+        """Return the active MongoDB database object, or None if in fallback mode."""
         if cls._should_fallback():
             return None
         return cls._db

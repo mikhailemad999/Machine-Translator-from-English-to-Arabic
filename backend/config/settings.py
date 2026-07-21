@@ -154,6 +154,9 @@ DATA_DIR = Path(os.getenv('DATA_DIR', BASE_DIR / 'data'))
 MODEL_SAVE_DIR = Path(os.getenv('MODEL_SAVE_DIR', BASE_DIR / 'models'))
 CHARTS_DIR = Path(os.getenv('CHARTS_DIR', BASE_DIR / 'charts'))
 
+for _dir in [DATA_DIR, MODEL_SAVE_DIR, CHARTS_DIR]:
+    os.makedirs(_dir, exist_ok=True)
+
 # ML Worker
 ML_WORKER_URL = f"http://{os.getenv('ML_WORKER_HOST', 'ml_worker')}:{os.getenv('ML_WORKER_PORT', '8001')}"
 

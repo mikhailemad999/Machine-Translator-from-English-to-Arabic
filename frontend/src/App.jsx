@@ -9,6 +9,9 @@ import Training from './pages/Training';
 import Evaluation from './pages/Evaluation';
 import Translate from './pages/Translate';
 
+/**
+ * App component setting up the main router, sidebar layout, and content routing.
+ */
 function App() {
   return (
     <Router>

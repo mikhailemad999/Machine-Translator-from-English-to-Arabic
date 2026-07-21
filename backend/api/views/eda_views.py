@@ -71,10 +71,14 @@ def serve_chart(request, filename):
     if not os.path.exists(chart_path):
         return Response({'error': f'Chart not found: {filename}'}, status=status.HTTP_404_NOT_FOUND)
 
-    return FileResponse(
+    response = FileResponse(
         open(chart_path, 'rb'),
         content_type='image/png',
     )
+    response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response['Pragma'] = 'no-cache'
+    response['Expires'] = '0'
+    return response
 
 
 @api_view(['GET'])

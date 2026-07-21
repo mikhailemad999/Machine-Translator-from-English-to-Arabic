@@ -132,7 +132,7 @@ def upload_dataset(request):
 def download_sample_dataset(request):
     """
     Download a sample EN-AR dataset from HuggingFace.
-    Uses opus_books en-ar subset.
+    Uses Helsinki-NLP/opus-100 ar-en split.
     """
     max_samples = request.data.get('max_samples', 10000)
 
@@ -140,25 +140,27 @@ def download_sample_dataset(request):
         from ml.data_loader import load_from_huggingface
 
         df = load_from_huggingface(
-            dataset_name='opus_books',
-            lang_pair='en-ar',
+            dataset_name='Helsinki-NLP/opus-100',
+            lang_pair='ar-en',
             max_samples=int(max_samples)
         )
 
+
         # Save to disk
-        save_path = os.path.join(settings.DATA_DIR, 'opus_books_en_ar.csv')
+        save_path = os.path.join(settings.DATA_DIR, 'opus_100_en_ar.csv')
         os.makedirs(settings.DATA_DIR, exist_ok=True)
         df.to_csv(save_path, index=False)
 
         # Create dataset record
         dataset = Dataset.objects.create(
-            name='OPUS Books EN-AR',
-            description=f'OPUS Books English-Arabic parallel corpus ({len(df)} pairs)',
+            name='OPUS-100 EN-AR',
+            description=f'OPUS-100 English-Arabic parallel corpus ({len(df)} pairs)',
             file_type='csv',
             total_pairs=len(df),
-            mongo_collection='dataset_opus_books_en_ar_raw',
+            mongo_collection='dataset_opus_100_en_ar_raw',
             status='uploaded',
         )
+
 
         # Store in MongoDB
         records = df.to_dict(orient='records')
@@ -178,7 +180,7 @@ def download_sample_dataset(request):
             'total_pairs': len(df),
             'saved_to': save_path,
             'exploration_report': exploration_report,
-            'message': f'Downloaded {len(df)} sentence pairs from OPUS Books.',
+            'message': f'Downloaded {len(df)} sentence pairs from OPUS-100.',
         }, status=status.HTTP_201_CREATED)
 
     except Exception as e:

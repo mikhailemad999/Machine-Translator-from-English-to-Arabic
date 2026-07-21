@@ -29,7 +29,7 @@ def detect_missing_values(df):
         # Empty string check
         if df[col].dtype == object:
             empty_count = int((df[col] == '').sum())
-            whitespace_count = int(df[col].astype(str).str.strip().eq('').sum()) - null_count
+            whitespace_count = int(df[col].dropna().astype(str).str.strip().eq('').sum()) - empty_count
         else:
             empty_count = 0
             whitespace_count = 0

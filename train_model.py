@@ -59,7 +59,7 @@ def main():
     print(f"Device: {device}")
     if device == 'cuda':
         print(f"GPU: {torch.cuda.get_device_name(0)}")
-        print(f"VRAM: {torch.cuda.get_device_properties(0).total_mem / 1e9:.1f} GB")
+        print(f"VRAM: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
     else:
         print("WARNING: Training on CPU will be slow!")
         print("  Consider reducing MAX_EPOCHS or dataset size.")

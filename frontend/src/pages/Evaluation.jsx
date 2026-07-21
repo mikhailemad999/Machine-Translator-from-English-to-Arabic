@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { listTrainingJobs, getEvaluation, runEvaluation, getChartUrl } from '../services/api';
 
+/**
+ * Evaluation component showing evaluation metrics (BLEU, chrF, TER)
+ * comparing the fine-tuned model against a baseline Helsinki-NLP pretrained model.
+ */
 function Evaluation() {
   const [jobs, setJobs] = useState([]);
   const [selectedJobId, setSelectedJobId] = useState(null);

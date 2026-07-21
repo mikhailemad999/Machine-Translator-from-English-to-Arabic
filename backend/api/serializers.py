@@ -4,13 +4,14 @@ from .models import Dataset, PreprocessingRun, TrainingJob, EvaluationResult, Tr
 
 
 class DatasetSerializer(serializers.ModelSerializer):
+    """Serializer for the Dataset metadata model."""
     class Meta:
         model = Dataset
         fields = '__all__'
 
 
 class DatasetUploadSerializer(serializers.Serializer):
-    """Serializer for file upload endpoint."""
+    """Serializer for file upload endpoint validation."""
     file = serializers.FileField()
     name = serializers.CharField(max_length=255)
     description = serializers.CharField(required=False, default='', allow_blank=True)
@@ -19,6 +20,7 @@ class DatasetUploadSerializer(serializers.Serializer):
 
 
 class PreprocessingRunSerializer(serializers.ModelSerializer):
+    """Serializer for details of a preprocessing run."""
     dataset_name = serializers.CharField(source='dataset.name', read_only=True)
 
     class Meta:
@@ -27,6 +29,7 @@ class PreprocessingRunSerializer(serializers.ModelSerializer):
 
 
 class TrainingJobSerializer(serializers.ModelSerializer):
+    """Serializer for training job details and hyperparameters."""
     dataset_name = serializers.CharField(source='dataset.name', read_only=True)
 
     class Meta:
@@ -35,7 +38,7 @@ class TrainingJobSerializer(serializers.ModelSerializer):
 
 
 class TrainingStartSerializer(serializers.Serializer):
-    """Serializer for starting a training job."""
+    """Serializer for validation configuration when starting a training job."""
     dataset_id = serializers.IntegerField()
     preprocessing_run_id = serializers.IntegerField(required=False)
     batch_size = serializers.IntegerField(default=4)
@@ -48,6 +51,7 @@ class TrainingStartSerializer(serializers.Serializer):
 
 
 class EvaluationResultSerializer(serializers.ModelSerializer):
+    """Serializer for model translation evaluation metrics."""
     training_job_status = serializers.CharField(source='training_job.status', read_only=True)
 
     class Meta:
@@ -56,13 +60,13 @@ class EvaluationResultSerializer(serializers.ModelSerializer):
 
 
 class TranslationRequestSerializer(serializers.Serializer):
-    """Serializer for translation requests."""
+    """Serializer validating standard translation requests."""
     text = serializers.CharField(max_length=5000)
     model_path = serializers.CharField(required=False, default='', allow_blank=True)
 
 
 class TranslationResponseSerializer(serializers.Serializer):
-    """Serializer for translation responses."""
+    """Serializer formatting responses for translation requests."""
     source_text = serializers.CharField()
     translated_text = serializers.CharField()
     translation_time_ms = serializers.FloatField()
@@ -70,6 +74,7 @@ class TranslationResponseSerializer(serializers.Serializer):
 
 
 class TranslationLogSerializer(serializers.ModelSerializer):
+    """Serializer for tracking history of translator logs."""
     class Meta:
         model = TranslationLog
         fields = '__all__'

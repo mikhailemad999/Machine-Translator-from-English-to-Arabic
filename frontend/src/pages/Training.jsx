@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { listDatasets, startTraining, getTrainingStatus, listTrainingJobs } from '../services/api';
 
+/**
+ * Training component allowing setting of hyperparameters, starting model
+ * fine-tuning runs, and plotting live epoch loss and BLEU graphs.
+ */
 function Training() {
   const [datasets, setDatasets] = useState([]);
   const [selectedDs, setSelectedDs] = useState(null);
