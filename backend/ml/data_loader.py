@@ -235,13 +235,13 @@ def explore_dataset(df):
     if 'ar' in df.columns:
         ar_sample = df['ar'].dropna().head(100)
         arabic_pct = ar_sample.apply(lambda x: is_arabic(str(x))).mean() * 100
-        report['arabic_content_pct'] = round(arabic_pct, 1)
+        report['arabic_content_pct'] = float(round(arabic_pct, 1))
 
     # Check if English column actually has English
     if 'en' in df.columns:
         en_sample = df['en'].dropna().head(100)
         english_pct = en_sample.apply(lambda x: is_english(str(x))).mean() * 100
-        report['english_content_pct'] = round(english_pct, 1)
+        report['english_content_pct'] = float(round(english_pct, 1))
 
     report['encoding_issues'] = encoding_issues if encoding_issues else ['No encoding issues detected']
     report['encoding_notes'] = (
