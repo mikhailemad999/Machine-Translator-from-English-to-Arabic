@@ -149,7 +149,11 @@ def load_from_huggingface(dataset_name='Helsinki-NLP/opus-100', lang_pair='ar-en
     """
     try:
         from datasets import load_dataset as hf_load
-        dataset = hf_load(dataset_name, lang_pair, split='train')
+        try:
+            dataset = hf_load(dataset_name, lang_pair, split='train')
+        except Exception:
+            alt_pair = 'ar-en' if lang_pair == 'en-ar' else 'en-ar'
+            dataset = hf_load(dataset_name, alt_pair, split='train')
 
         records = []
         for i, item in enumerate(dataset):

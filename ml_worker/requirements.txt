@@ -5,6 +5,7 @@ flask-cors>=4.0
 # ML / Deep Learning
 torch>=2.2
 transformers>=4.38
+datasets>=2.16.0
 sentencepiece>=0.2
 sacrebleu>=2.4
 

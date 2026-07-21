@@ -28,6 +28,7 @@ sentencepiece>=0.2
 
 # ML / Deep Learning (CPU for backend - GPU in ml_worker)
 transformers>=4.38
+datasets>=2.16.0
 torch>=2.2
 
 # Utilities
