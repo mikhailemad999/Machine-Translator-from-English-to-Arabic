@@ -169,6 +169,19 @@ def evaluate_model(
 
     target_notes = _generate_target_notes(baseline_metrics, ft_metrics, meets_target)
 
+    bleu_base = max(baseline_metrics['bleu'], 0.1)
+    chrf_base = max(baseline_metrics['chrf'], 0.1)
+    ter_base = max(baseline_metrics['ter'], 0.1)
+
+    bleu_gain_pct = round(((ft_metrics['bleu'] - baseline_metrics['bleu']) / bleu_base) * 100, 1)
+    chrf_gain_pct = round(((ft_metrics['chrf'] - baseline_metrics['chrf']) / chrf_base) * 100, 1)
+    ter_reduction_pct = round(((baseline_metrics['ter'] - ft_metrics['ter']) / ter_base) * 100, 1)
+
+    # Compute length fidelity & exact matches
+    exact_matches = sum(1 for p, r in zip(ft_preds, references) if p.strip() == r.strip())
+    avg_ref_len = float(np.mean([len(r) for r in references])) if references else 0.0
+    avg_pred_len = float(np.mean([len(p) for p in ft_preds])) if ft_preds else 0.0
+
     results = {
         'baseline': {
             'model_name': baseline_model_name,
@@ -185,7 +198,17 @@ def evaluate_model(
         'improvement': {
             'bleu_delta': round(ft_metrics['bleu'] - baseline_metrics['bleu'], 2),
             'chrf_delta': round(ft_metrics['chrf'] - baseline_metrics['chrf'], 2),
-            'ter_delta': round(baseline_metrics['ter'] - ft_metrics['ter'], 2),  # Lower is better
+            'ter_delta': round(baseline_metrics['ter'] - ft_metrics['ter'], 2),
+            'bleu_gain_pct': bleu_gain_pct,
+            'chrf_gain_pct': chrf_gain_pct,
+            'ter_reduction_pct': ter_reduction_pct,
+        },
+        'qualitative_analysis': {
+            'exact_matches_count': exact_matches,
+            'exact_matches_pct': round((exact_matches / max(len(sources), 1)) * 100, 1),
+            'avg_reference_char_len': round(avg_ref_len, 1),
+            'avg_generated_char_len': round(avg_pred_len, 1),
+            'length_fidelity_pct': round((avg_pred_len / max(avg_ref_len, 0.1)) * 100, 1),
         },
         'example_translations': examples,
         'comparison_chart_path': chart_path,

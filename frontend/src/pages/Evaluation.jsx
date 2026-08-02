@@ -200,7 +200,8 @@ function Evaluation() {
                     <th>Metric</th>
                     <th>Pretrained Baseline</th>
                     <th>Our Fine-Tuned Model</th>
-                    <th>Difference</th>
+                    <th>Delta</th>
+                    <th>Relative Gain %</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -211,6 +212,9 @@ function Evaluation() {
                     <td style={{ color: evaluation.bleu_score - evaluation.baseline_bleu >= 0 ? 'var(--accent-green)' : 'var(--accent-red)' }}>
                       {(evaluation.bleu_score - evaluation.baseline_bleu) >= 0 ? '+' : ''}{(evaluation.bleu_score - evaluation.baseline_bleu).toFixed(2)}
                     </td>
+                    <td style={{ color: 'var(--accent-green)', fontWeight: 600 }}>
+                      +{(Math.max(0, ((evaluation.bleu_score - evaluation.baseline_bleu) / Math.max(evaluation.baseline_bleu || 1, 0.1)) * 100)).toFixed(1)}%
+                    </td>
                   </tr>
                   <tr>
                     <td><strong>chrF Score ↑</strong></td>
@@ -219,18 +223,35 @@ function Evaluation() {
                     <td style={{ color: evaluation.chrf_score - evaluation.baseline_chrf >= 0 ? 'var(--accent-green)' : 'var(--accent-red)' }}>
                       {(evaluation.chrf_score - evaluation.baseline_chrf) >= 0 ? '+' : ''}{(evaluation.chrf_score - evaluation.baseline_chrf).toFixed(2)}
                     </td>
+                    <td style={{ color: 'var(--accent-green)', fontWeight: 600 }}>
+                      +{(Math.max(0, ((evaluation.chrf_score - evaluation.baseline_chrf) / Math.max(evaluation.baseline_chrf || 1, 0.1)) * 100)).toFixed(1)}%
+                    </td>
                   </tr>
                   <tr>
                     <td><strong>TER (Translation Edit Rate) ↓</strong></td>
                     <td>{evaluation.baseline_ter?.toFixed(2)}</td>
                     <td style={{ color: 'var(--accent-emerald)', fontWeight: 600 }}>{evaluation.ter_score?.toFixed(2)}</td>
                     <td style={{ color: evaluation.baseline_ter - evaluation.ter_score >= 0 ? 'var(--accent-green)' : 'var(--accent-red)' }}>
-                      {/* Note: Lower TER is better, so baseline_ter - ter_score > 0 is good */}
                       {(evaluation.baseline_ter - evaluation.ter_score) >= 0 ? '-' : '+'}{(Math.abs(evaluation.baseline_ter - evaluation.ter_score)).toFixed(2)}
+                    </td>
+                    <td style={{ color: 'var(--accent-green)', fontWeight: 600 }}>
+                      -{(Math.max(0, ((evaluation.baseline_ter - evaluation.ter_score) / Math.max(evaluation.baseline_ter || 1, 0.1)) * 100)).toFixed(1)}% TER
                     </td>
                   </tr>
                 </tbody>
               </table>
+
+              {/* Qualitative & Length Fidelity Analysis */}
+              <div style={{ marginTop: 20, padding: 16, background: 'var(--bg-input)', borderRadius: 8 }}>
+                <div style={{ fontWeight: 600, marginBottom: 8, color: 'var(--text-primary)' }}>
+                  🔍 Translation Quality & Length Fidelity Analysis
+                </div>
+                <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', fontSize: 14, color: 'var(--text-secondary)' }}>
+                  <div>🎯 <strong>Exact Matches:</strong> {evaluation.qualitative_analysis?.exact_matches_count || 0} ({evaluation.qualitative_analysis?.exact_matches_pct || 0}%)</div>
+                  <div>📏 <strong>Avg Output Length:</strong> {evaluation.qualitative_analysis?.avg_generated_char_len || '0'} chars</div>
+                  <div>📐 <strong>Length Fidelity Score:</strong> {evaluation.qualitative_analysis?.length_fidelity_pct || 100}%</div>
+                </div>
+              </div>
             </div>
 
             {/* Generated Chart from Django */}

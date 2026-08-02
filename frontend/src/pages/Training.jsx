@@ -163,14 +163,38 @@ function Training() {
             </span>
           </div>
 
-          {/* Epoch Metrics */}
+          {/* Progress Bar & Split Ratios */}
+          {activeJob.status === 'running' && (
+            <div style={{ margin: '16px 0 20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, marginBottom: 6, color: 'var(--text-secondary)' }}>
+                <span>⚡ Fine-Tuning Progress</span>
+                <span>{Math.round(((epochData[epochData.length - 1]?.epoch || 0) / (activeJob.max_epochs || 10)) * 100)}% Complete</span>
+              </div>
+              <div style={{ height: 10, background: 'var(--bg-input)', borderRadius: 5, overflow: 'hidden' }}>
+                <div
+                  style={{
+                    height: '100%',
+                    width: `${Math.min(100, Math.round(((epochData[epochData.length - 1]?.epoch || 0) / (activeJob.max_epochs || 10)) * 100))}%`,
+                    background: 'linear-gradient(90deg, #3b82f6, #10b981)',
+                    transition: 'width 0.5s ease'
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Epoch Metrics & Analytics */}
           {epochData.length > 0 && (
             <>
               <div className="metrics-grid">
                 <div className="metric-card">
-                  <div className="metric-label">Current Epoch</div>
-                  <div className="metric-value info">{epochData[epochData.length - 1]?.epoch}</div>
-                  <div className="metric-sub">of {activeJob.max_epochs}</div>
+                  <div className="metric-label">Epoch Progress</div>
+                  <div className="metric-value info">
+                    {epochData[epochData.length - 1]?.epoch} / {activeJob.max_epochs || 10}
+                  </div>
+                  <div className="metric-sub">
+                    ({Math.round(((epochData[epochData.length - 1]?.epoch || 0) / (activeJob.max_epochs || 10)) * 100)}%)
+                  </div>
                 </div>
                 <div className="metric-card">
                   <div className="metric-label">Best Val BLEU</div>
@@ -180,14 +204,32 @@ function Training() {
                   <div className="metric-sub">Target: ≥ 25.0</div>
                 </div>
                 <div className="metric-card">
-                  <div className="metric-label">Train Loss</div>
-                  <div className="metric-value">{epochData[epochData.length - 1]?.train_loss}</div>
+                  <div className="metric-label">Loss Reduction %</div>
+                  <div className="metric-value success">
+                    {epochData[epochData.length - 1]?.loss_reduction_pct || 0}%
+                  </div>
+                  <div className="metric-sub">Epoch 1 → Current</div>
                 </div>
                 <div className="metric-card">
                   <div className="metric-label">Val Loss</div>
                   <div className="metric-value">{epochData[epochData.length - 1]?.val_loss}</div>
+                  <div className="metric-sub">Train: {epochData[epochData.length - 1]?.train_loss}</div>
                 </div>
               </div>
+
+              {/* Dataset Split Distribution Stats */}
+              {activeJob.train_size > 0 && (
+                <div style={{ marginTop: 20, padding: '12px 16px', background: 'var(--bg-input)', borderRadius: 8, fontSize: 14 }}>
+                  <div style={{ fontWeight: 600, marginBottom: 8, color: 'var(--text-primary)' }}>
+                    📊 Corpus Split Ratios & Data Distribution
+                  </div>
+                  <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', color: 'var(--text-secondary)' }}>
+                    <div>🔹 <strong>Train Set (80%):</strong> {activeJob.train_size?.toLocaleString()} pairs</div>
+                    <div>🔸 <strong>Val Set (10%):</strong> {activeJob.val_size?.toLocaleString()} pairs</div>
+                    <div>🟢 <strong>Test Set (10%):</strong> {activeJob.test_size?.toLocaleString()} pairs</div>
+                  </div>
+                </div>
+              )}
 
               {/* Learning Curves */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginTop: 24 }}>

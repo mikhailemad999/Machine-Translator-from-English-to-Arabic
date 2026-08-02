@@ -309,22 +309,34 @@ def train_model(
 
         elapsed = time.time() - start_time
 
+        first_train_loss = epoch_data[0]['train_loss'] if len(epoch_data) > 0 else avg_train_loss
+        first_val_bleu = epoch_data[0]['val_bleu'] if len(epoch_data) > 0 else val_bleu
+
+        loss_reduction = round((max(0.0, first_train_loss - avg_train_loss) / max(first_train_loss, 0.0001)) * 100, 1)
+        bleu_gain = round((max(0.0, val_bleu - first_val_bleu) / max(first_val_bleu, 0.1)) * 100, 1)
+        gap = round(float(avg_val_loss - avg_train_loss), 4)
+
         epoch_info = {
             'epoch': epoch + 1,
+            'max_epochs': max_epochs,
+            'progress_pct': round(((epoch + 1) / max_epochs) * 100, 1),
             'train_loss': round(float(avg_train_loss), 4),
             'val_loss': round(float(avg_val_loss), 4),
             'val_bleu': round(float(val_bleu), 2),
             'elapsed_seconds': round(elapsed, 1),
-            'loss_gap': round(float(avg_val_loss - avg_train_loss), 4),
+            'loss_gap': gap,
+            'loss_reduction_pct': loss_reduction,
+            'bleu_gain_pct': bleu_gain,
+            'overfitting_risk': 'High' if gap >= 0.7 else ('Moderate' if gap >= 0.3 else 'Low'),
         }
         epoch_data.append(epoch_info)
 
         print(
-            f"Epoch {epoch + 1}/{max_epochs} | "
+            f"Epoch {epoch + 1}/{max_epochs} ({epoch_info['progress_pct']}%) | "
             f"Train Loss: {avg_train_loss:.4f} | "
             f"Val Loss: {avg_val_loss:.4f} | "
             f"Val BLEU: {val_bleu:.2f} | "
-            f"Gap: {avg_val_loss - avg_train_loss:.4f} | "
+            f"Gap: {gap:.4f} | "
             f"Time: {elapsed:.1f}s"
         )
 
@@ -338,32 +350,42 @@ def train_model(
             best_epoch = epoch + 1
             patience_counter = 0
 
-            # Save best model
+            # Save best checkpoint model locally
+            print(f"Saving best model checkpoint (Val Loss: {best_val_loss:.4f}, BLEU: {best_val_bleu:.2f})")
+            os.makedirs(best_model_path, exist_ok=True)
             model.save_pretrained(best_model_path)
             tokenizer.save_pretrained(best_model_path)
-            print(f"  -> Saved best model (BLEU: {val_bleu:.2f})")
         else:
             patience_counter += 1
+            print(f"Validation loss did not improve. Patience: {patience_counter}/{early_stopping_patience}")
             if patience_counter >= early_stopping_patience:
-                print(f"  -> Early stopping at epoch {epoch + 1}")
+                print(f"Early stopping triggered at epoch {epoch + 1}")
                 break
 
-    # ---- DIAGNOSIS ----
-    diagnosis = diagnose_fit(epoch_data)
+    total_corpus_pairs = len(df)
+    first_loss = epoch_data[0]['train_loss'] if epoch_data else 1.0
+    final_loss = epoch_data[-1]['train_loss'] if epoch_data else 1.0
+    total_loss_reduction = round((max(0.0, first_loss - final_loss) / max(first_loss, 0.0001)) * 100, 1)
 
-    # ---- LEARNING CURVES ----
+    # Plot learning curve chart
     curve_path = plot_learning_curves(epoch_data, charts_dir)
 
-    # ---- RESULTS ----
+    diagnosis = diagnose_fit(epoch_data)
+
     results = {
-        'model_name': model_name,
         'best_epoch': best_epoch,
         'best_val_loss': round(float(best_val_loss), 4),
         'best_val_bleu': round(float(best_val_bleu), 2),
         'total_epochs': len(epoch_data),
+        'max_epochs': max_epochs,
+        'completion_pct': round((len(epoch_data) / max_epochs) * 100, 1),
+        'total_loss_reduction_pct': total_loss_reduction,
         'train_size': len(train_df),
         'val_size': len(val_df),
         'test_size': len(test_df),
+        'train_split_pct': round((len(train_df) / max(total_corpus_pairs, 1)) * 100, 1),
+        'val_split_pct': round((len(val_df) / max(total_corpus_pairs, 1)) * 100, 1),
+        'test_split_pct': round((len(test_df) / max(total_corpus_pairs, 1)) * 100, 1),
         'epoch_data': epoch_data,
         'diagnosis': diagnosis,
         'model_checkpoint_path': best_model_path,
