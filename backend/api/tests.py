@@ -90,6 +90,21 @@ class MLPipelineTestCase(unittest.TestCase):
         self.assertEqual(metrics['ter'], 0.0)
 
 
+    def test_step_1_explore_50_samples(self):
+        """Test dataset exploration returns up to 50 preview pairs and rich statistical metrics."""
+        large_mock_data = pd.DataFrame({
+            'en': [f'Hello sentence {i} for MT testing' for i in range(100)],
+            'ar': [f'مرحبا جملة رقم {i} للاختبار' for i in range(100)]
+        })
+        report = explore_dataset(large_mock_data)
+        self.assertEqual(report['shape']['rows'], 100)
+        self.assertEqual(len(report['sample_pairs']), 50)
+        self.assertIn('dataset_health_score', report)
+        self.assertIn('database_metrics', report)
+        self.assertIn('length_ratios', report)
+        self.assertEqual(report['dataset_health_score'], 100.0)
+
+
 class APIRoutingTestCase(TestCase):
     """Test case for API routing and endpoints."""
 
@@ -99,4 +114,49 @@ class APIRoutingTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['status'], 'running')
         self.assertIn('endpoints', response.data)
+
+    def test_dataset_upload_api(self):
+        """Test POST /api/dataset/upload/ creates record and returns 50 sample preview."""
+        import io
+        csv_content = 'en,ar\n' + '\n'.join([f'Sentence {i},جملة {i}' for i in range(60)])
+        csv_file = io.BytesIO(csv_content.encode('utf-8'))
+        csv_file.name = 'test_upload.csv'
+
+        response = self.client.post('/api/dataset/upload/', {
+            'file': csv_file,
+            'name': 'Test Upload Corpus',
+            'description': 'Integration test upload',
+            'en_column': 'en',
+            'ar_column': 'ar',
+        }, format='multipart')
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.data['total_pairs'], 60)
+        self.assertIn('exploration_report', response.data)
+        self.assertEqual(len(response.data['exploration_report']['sample_pairs']), 50)
+
+    def test_start_training_api(self):
+        """Test POST /api/train/start/ queued response on uploaded dataset."""
+        from api.models import Dataset
+        ds = Dataset.objects.create(
+            name='Test Training Dataset',
+            file_type='csv',
+            total_pairs=100,
+            mongo_collection='dataset_test_training_raw',
+            status='uploaded'
+        )
+
+        response = self.client.post('/api/train/start/', {
+            'dataset_id': ds.id,
+            'batch_size': 4,
+            'gradient_accumulation': 8,
+            'learning_rate': 5e-5,
+            'max_epochs': 1,
+            'early_stopping_patience': 3,
+            'fp16': False,
+        }, format='json')
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.data['status'], 'queued')
+        self.assertIn('job_id', response.data)
 
