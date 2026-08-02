@@ -1,5 +1,14 @@
 """
-Root URL configuration for Machine Translator project.
+==============================================================================
+ROOT URL CONFIGURATION MODULE — Django System-Wide Route Dispatcher
+==============================================================================
+
+Purpose:
+  This module defines the top-level URL patterns for the Django application:
+  1. '/admin/' -> Connects to Django Administration web dashboard.
+  2. '/api/'   -> Delegates API endpoints to the `api.urls` routing module.
+  3. Static/Media serving -> Exposes generated charts and uploads during local dev.
+==============================================================================
 """
 from django.contrib import admin
 from django.urls import path, include

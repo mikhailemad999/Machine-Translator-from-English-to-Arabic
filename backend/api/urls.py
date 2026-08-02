@@ -1,4 +1,19 @@
-"""API URL Configuration — All endpoints."""
+"""
+==============================================================================
+API ROUTING MODULE — Django REST Framework URL Endpoints Mapping
+==============================================================================
+
+Purpose:
+  This module defines all HTTP REST API endpoints for the web client, mapping
+  URL request paths to corresponding view handler functions across 6 domains:
+  1. Datasets (/api/dataset/) — Upload, list, detail, and sample dataset downloads.
+  2. Preprocessing (/api/preprocess/) — Execute cleaning pipeline and retrieve runs.
+  3. EDA (/api/eda/) — Serve EDA summaries and plot charts.
+  4. Training (/api/train/) — Launch background fine-tuning jobs and monitor progress.
+  5. Evaluation (/api/evaluate/) — Compute BLEU, chrF, TER metrics against baseline.
+  6. Translation (/api/translate/) — Real-time single sentence and batch translation.
+==============================================================================
+"""
 from django.urls import path
 from .views import (
     dataset_views,
