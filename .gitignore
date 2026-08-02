@@ -45,17 +45,16 @@ Thumbs.db
 desktop.ini
 
 # ML Models & Data (large files)
-models/*.pt
-models/*.bin
-models/*.safetensors
-models/checkpoint-*/
+models/*
+!models/.gitkeep
 data/*.csv
 data/*.tsv
 data/*.json
 data/*.parquet
+data/test_*.txt
 !data/.gitkeep
-!models/.gitkeep
 !charts/.gitkeep
+backend/local_mongo_data/
 
 # Charts (generated)
 charts/*.png

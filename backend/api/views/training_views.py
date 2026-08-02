@@ -32,16 +32,24 @@ def _run_training(job_id):
         job.status = 'running'
         job.save()
 
-        # Load cleaned dataset
+        # Load dataset (cleaned or raw fallback)
         cleaned_csv = os.path.join(str(settings.DATA_DIR), f'dataset_{job.dataset_id}_cleaned.csv')
         if os.path.exists(cleaned_csv):
             df = pd.read_csv(cleaned_csv)
         else:
-            # Fallback: load from MongoDB
             dataset = job.dataset
             cleaned_collection = f'{dataset.mongo_collection}_cleaned'
             records = MongoDBClient.get_raw_dataset(cleaned_collection)
-            df = pd.DataFrame(records)
+            if not records:
+                records = MongoDBClient.get_raw_dataset(dataset.mongo_collection)
+            if records:
+                df = pd.DataFrame(records)
+            else:
+                raw_csv = os.path.join(str(settings.DATA_DIR), 'en_ar_dataset.csv')
+                if os.path.exists(raw_csv):
+                    df = pd.read_csv(raw_csv)
+                else:
+                    raise ValueError(f"No dataset records found for dataset ID {job.dataset_id}")
 
         def progress_callback(epoch_info):
             """Update job with epoch progress."""
@@ -127,9 +135,9 @@ def start_training(request):
     except Dataset.DoesNotExist:
         return Response({'error': 'Dataset not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    if dataset.status not in ('ready', 'completed'):
+    if dataset.status in ('training', 'preprocessing'):
         return Response(
-            {'error': f'Dataset not ready for training. Current status: {dataset.status}. Run preprocessing first.'},
+            {'error': f'Dataset is currently in status "{dataset.status}". Please wait for ongoing operations to complete.'},
             status=status.HTTP_400_BAD_REQUEST
         )
 

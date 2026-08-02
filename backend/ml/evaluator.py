@@ -113,10 +113,13 @@ def evaluate_model(
     resolved_ft = find_local_path(model_path)
     resolved_ft = resolved_ft if resolved_ft else model_path
 
+    from ml.utils import to_device_safe
+
     # ---- BASELINE EVALUATION ----
     print(f"Evaluating baseline model from: {resolved_baseline}")
     baseline_tokenizer = AutoTokenizer.from_pretrained(resolved_baseline)
-    baseline_model = AutoModelForSeq2SeqLM.from_pretrained(resolved_baseline).to(device)
+    baseline_model = AutoModelForSeq2SeqLM.from_pretrained(resolved_baseline)
+    baseline_model = to_device_safe(baseline_model, device)
 
     baseline_translations = _batch_translate(
         baseline_model, baseline_tokenizer, sources, device, max_length
@@ -129,7 +132,8 @@ def evaluate_model(
     # ---- FINE-TUNED MODEL EVALUATION ----
     print(f"Evaluating fine-tuned model from: {resolved_ft}")
     ft_tokenizer = AutoTokenizer.from_pretrained(resolved_ft)
-    ft_model = AutoModelForSeq2SeqLM.from_pretrained(resolved_ft).to(device)
+    ft_model = AutoModelForSeq2SeqLM.from_pretrained(resolved_ft)
+    ft_model = to_device_safe(ft_model, device)
 
 
     ft_translations = _batch_translate(

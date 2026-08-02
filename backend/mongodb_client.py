@@ -70,7 +70,7 @@ class FileBasedDB:
     def _write_collection(cls, name, data):
         """Write the records list back to the specified collection JSON file."""
         path = cls._get_collection_path(name)
-        path.write_text(json.dumps(data, ensure_ascii=False, default=str, indent=2), encoding='utf-8')
+        path.write_text(json.dumps(data, ensure_ascii=False, default=str), encoding='utf-8')
 
     @classmethod
     def insert_many(cls, collection_name, records):

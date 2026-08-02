@@ -3,6 +3,41 @@ ML Utilities — Arabic text normalization, tokenization helpers.
 """
 import re
 import string
+import torch
+
+
+def to_device_safe(model, device):
+    """
+    Move PyTorch model to target device safely.
+    Handles any uninitialized 'meta' device parameters or buffers
+    (e.g., final_logits_bias uninitialized by safetensors/Marian).
+    """
+    for name, param in model.named_parameters():
+        if param.device.type == 'meta':
+            real_tensor = torch.zeros(param.shape, dtype=param.dtype, device='cpu')
+            if '.' in name:
+                *path, attr = name.split('.')
+                mod = model
+                for p in path:
+                    mod = getattr(mod, p)
+                setattr(mod, attr, torch.nn.Parameter(real_tensor, requires_grad=param.requires_grad))
+            else:
+                setattr(model, name, torch.nn.Parameter(real_tensor, requires_grad=param.requires_grad))
+
+    for name, buf in model.named_buffers():
+        if buf.device.type == 'meta':
+            real_tensor = torch.zeros(buf.shape, dtype=buf.dtype, device='cpu')
+            if '.' in name:
+                *path, attr = name.split('.')
+                mod = model
+                for p in path:
+                    mod = getattr(mod, p)
+                setattr(mod, attr, real_tensor)
+            else:
+                setattr(model, name, real_tensor)
+
+    return model.to(device)
+
 
 
 def normalize_arabic(text):

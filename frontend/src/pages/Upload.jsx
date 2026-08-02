@@ -182,7 +182,14 @@ function Upload() {
       {/* Results */}
       {result && (
         <div className="card animate-in">
-          <div className="card-title">✅ Step 1 — Exploration Report</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+            <div className="card-title" style={{ marginBottom: 0 }}>✅ Step 1 — Exploration & Database Analysis</div>
+            {result.exploration_report?.dataset_health_score !== undefined && (
+              <span className={`badge ${result.exploration_report.dataset_health_score >= 80 ? 'badge-success' : 'badge-warning'}`} style={{ fontSize: 14, padding: '6px 12px' }}>
+                Health Score: {result.exploration_report.dataset_health_score}%
+              </span>
+            )}
+          </div>
 
           <div className="metrics-grid">
             <div className="metric-card">
@@ -190,45 +197,127 @@ function Upload() {
               <div className="metric-value info">{result.dataset_id}</div>
             </div>
             <div className="metric-card">
-              <div className="metric-label">Total Pairs</div>
+              <div className="metric-label">Total Sentence Pairs</div>
               <div className="metric-value">{result.total_pairs?.toLocaleString()}</div>
             </div>
             <div className="metric-card">
-              <div className="metric-label">Stored in MongoDB</div>
+              <div className="metric-label">Stored in Storage</div>
               <div className="metric-value success">{result.stored_in_mongodb?.toLocaleString()}</div>
+            </div>
+            <div className="metric-card">
+              <div className="metric-label">RAM Footprint</div>
+              <div className="metric-value">{result.exploration_report?.shape?.memory_mb || '0.1'} MB</div>
             </div>
           </div>
 
           {result.exploration_report && (
             <>
-              <h4 style={{ margin: '20px 0 12px', color: 'var(--text-primary)' }}>📊 Dataset Shape</h4>
-              <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>
-                {result.exploration_report.shape?.rows} rows × {result.exploration_report.shape?.cols} columns
-              </p>
+              {/* Database & Data Integrity Metrics */}
+              {result.exploration_report.database_metrics && (
+                <div style={{ marginTop: 24 }}>
+                  <h4 style={{ marginBottom: 12, color: 'var(--text-primary)' }}>🗄️ Database & Integrity Metrics</h4>
+                  <div className="metrics-grid">
+                    <div className="metric-card">
+                      <div className="metric-label">Exact Duplicates</div>
+                      <div className="metric-value warning">
+                        {result.exploration_report.database_metrics.exact_duplicates?.toLocaleString()} ({result.exploration_report.database_metrics.duplicate_pct}%)
+                      </div>
+                    </div>
+                    <div className="metric-card">
+                      <div className="metric-label">Empty EN Rows</div>
+                      <div className="metric-value">{result.exploration_report.database_metrics.empty_rows_en}</div>
+                    </div>
+                    <div className="metric-card">
+                      <div className="metric-label">Empty AR Rows</div>
+                      <div className="metric-value">{result.exploration_report.database_metrics.empty_rows_ar}</div>
+                    </div>
+                    <div className="metric-card">
+                      <div className="metric-label">Target Storage Collection</div>
+                      <div className="metric-value info" style={{ fontSize: 13, wordBreak: 'break-all' }}>
+                        {result.mongo_collection}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
-              <h4 style={{ margin: '20px 0 12px', color: 'var(--text-primary)' }}>📝 Sample Pairs</h4>
-              <table className="data-table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>English</th>
-                    <th>Arabic</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {result.exploration_report.sample_pairs?.slice(0, 5).map((pair, i) => (
-                    <tr key={i}>
-                      <td>{i + 1}</td>
-                      <td>{pair.en?.substring(0, 80)}{pair.en?.length > 80 ? '...' : ''}</td>
-                      <td className="arabic-text" style={{ direction: 'rtl' }}>
-                        {pair.ar?.substring(0, 80)}{pair.ar?.length > 80 ? '...' : ''}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              {/* Column Statistical Analysis */}
+              {result.exploration_report.summary && (
+                <div style={{ marginTop: 24 }}>
+                  <h4 style={{ marginBottom: 12, color: 'var(--text-primary)' }}>📈 Statistical Length Analysis</h4>
+                  <table className="data-table">
+                    <thead>
+                      <tr>
+                        <th>Column</th>
+                        <th>Non-Null</th>
+                        <th>Unique %</th>
+                        <th>Avg / Min / Max Chars</th>
+                        <th>Avg / Min / Max Tokens</th>
+                        <th>Median / Std Tokens</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {['en', 'ar'].map(col => {
+                        const s = result.exploration_report.summary[col];
+                        if (!s) return null;
+                        return (
+                          <tr key={col}>
+                            <td style={{ fontWeight: 600, textTransform: 'uppercase' }}>{col}</td>
+                            <td>{s.non_null?.toLocaleString()}</td>
+                            <td>{s.unique_pct}%</td>
+                            <td>{s.avg_length_chars} ({s.min_length_chars} - {s.max_length_chars})</td>
+                            <td>{s.avg_length_tokens} ({s.min_length_tokens} - {s.max_length_tokens})</td>
+                            <td>{s.median_tokens} (±{s.std_tokens})</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
 
-              <h4 style={{ margin: '20px 0 12px', color: 'var(--text-primary)' }}>🔍 Encoding Notes</h4>
+              {/* Cross-Language Ratios */}
+              {result.exploration_report.length_ratios && (
+                <div style={{ display: 'flex', gap: 24, marginTop: 16, fontSize: 14, color: 'var(--text-secondary)' }}>
+                  <div>🔤 <strong>EN / AR Character Ratio:</strong> {result.exploration_report.length_ratios.char_ratio_en_to_ar}</div>
+                  <div>🧩 <strong>EN / AR Token Ratio:</strong> {result.exploration_report.length_ratios.token_ratio_en_to_ar}</div>
+                </div>
+              )}
+
+              {/* 50 Sample Sentence Pairs Preview */}
+              <div style={{ marginTop: 24 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                  <h4 style={{ margin: 0, color: 'var(--text-primary)' }}>📝 Sample Translation Pairs Preview (50 Rows)</h4>
+                  <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
+                    Showing {Math.min(50, result.exploration_report.sample_pairs?.length || 0)} pairs
+                  </span>
+                </div>
+
+                <div style={{ maxHeight: '420px', overflowY: 'auto', border: '1px solid var(--border-color)', borderRadius: 8 }}>
+                  <table className="data-table" style={{ margin: 0 }}>
+                    <thead style={{ position: 'sticky', top: 0, background: 'var(--bg-card)', zIndex: 1 }}>
+                      <tr>
+                        <th style={{ width: 60 }}>#</th>
+                        <th style={{ width: '45%' }}>English Sentence</th>
+                        <th style={{ width: '45%' }}>Arabic Sentence</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {result.exploration_report.sample_pairs?.slice(0, 50).map((pair, i) => (
+                        <tr key={i}>
+                          <td style={{ color: 'var(--text-secondary)', fontSize: 12 }}>{i + 1}</td>
+                          <td>{pair.en}</td>
+                          <td className="arabic-text" style={{ direction: 'rtl' }}>
+                            {pair.ar}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <h4 style={{ margin: '24px 0 12px', color: 'var(--text-primary)' }}>🔍 Encoding & Script Check</h4>
               <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>
                 {result.exploration_report.encoding_notes}
               </p>

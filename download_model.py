@@ -56,9 +56,12 @@ def download_model():
     ]
 
     import torch
+    sys.path.insert(0, os.path.join(PROJECT_ROOT, 'backend'))
+    from ml.utils import to_device_safe
+
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Device: {device}")
-    model = model.to(device)
+    model = to_device_safe(model, device)
     model.eval()
 
     for sentence in test_sentences:

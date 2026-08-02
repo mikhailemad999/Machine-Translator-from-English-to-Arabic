@@ -25,7 +25,7 @@ function Training() {
     listDatasets()
       .then(res => {
         const list = res.data?.results || res.data || [];
-        const filtered = list.filter(d => ['ready', 'completed', 'training'].includes(d.status));
+        const filtered = list.filter(d => ['uploaded', 'ready', 'completed', 'preprocessed', 'training'].includes(d.status));
         setDatasets(filtered);
         if (filtered.length > 0) setSelectedDs(filtered[0]?.id);
       })

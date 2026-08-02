@@ -173,11 +173,13 @@ def train_model(
     resolved_model = find_local_path('opus-mt-en-ar') if model_name == 'Helsinki-NLP/opus-mt-en-ar' else find_local_path(model_name)
     resolved_model = resolved_model if resolved_model else model_name
 
+    from ml.utils import to_device_safe
+
     # Load tokenizer and model
     print(f"Loading model: {resolved_model}")
     tokenizer = AutoTokenizer.from_pretrained(resolved_model)
     model = AutoModelForSeq2SeqLM.from_pretrained(resolved_model)
-    model.to(device)
+    model = to_device_safe(model, device)
 
 
     # Split data

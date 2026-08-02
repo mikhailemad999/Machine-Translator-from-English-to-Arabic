@@ -5,6 +5,13 @@ echo   🌐 English-to-Arabic Machine Translator - Local Development
 echo ====================================================================
 echo.
 
+:: Ensure working directory is project root
+cd /d "%~dp0"
+
+:: Set local environment defaults
+set USE_SQLITE=True
+set MONGO_FALLBACK=file
+
 :: 1. Verify Node.js and Python
 where node >nul 2>nul
 if %ERRORLEVEL% neq 0 (
@@ -21,18 +28,31 @@ if %ERRORLEVEL% neq 0 (
 )
 
 :: 2. Check/Activate Virtual Environment
-if not exist venv (
+if not exist "venv" (
     echo [INFO] Virtual environment 'venv' not found. Creating it...
     python -m venv venv
 )
 
 echo [INFO] Activating virtual environment...
-call venv\Scripts\activate
+call "%~dp0venv\Scripts\activate.bat"
 
-:: Ensure Python dependencies are up to date
-echo [INFO] Ensuring Python dependencies are up to date...
-pip install -r backend\requirements.txt
-pip install -r ml_worker\requirements.txt
+:: Ensure Python dependencies are installed if missing
+if not exist "%~dp0venv\Scripts\django-admin.exe" (
+    echo [INFO] Installing Python dependencies in virtual environment...
+    pip install -r "%~dp0backend\requirements.txt"
+    pip install -r "%~dp0ml_worker\requirements.txt"
+    pip install sacremoses
+) else (
+    echo [INFO] Python dependencies already installed. Skipping pip install.
+)
+
+:: Ensure Frontend dependencies are installed
+if not exist "%~dp0frontend\node_modules" (
+    echo [INFO] Installing Frontend node_modules...
+    cd /d "%~dp0frontend"
+    call npm install
+    cd /d "%~dp0"
+)
 
 :: 3. Check for GPU support
 echo [INFO] Checking for GPU acceleration...
@@ -44,31 +64,32 @@ if %ERRORLEVEL% equ 0 (
 )
 
 :: 4. Check if translation model is downloaded
-if not exist "models\opus-mt-en-ar\model.safetensors" (
-    if not exist "models\opus-mt-en-ar\pytorch_model.bin" (
+if not exist "%~dp0models\opus-mt-en-ar\model.safetensors" (
+    if not exist "%~dp0models\opus-mt-en-ar\pytorch_model.bin" (
         echo [INFO] Pre-trained translation model not found in models\opus-mt-en-ar.
         echo [INFO] Downloading model now...
-        python download_model.py
+        python "%~dp0download_model.py"
     )
 )
 
 :: 5. Run Django migrations
 echo [INFO] Running Django database migrations (SQLite)...
-cd backend
+cd /d "%~dp0backend"
 python manage.py migrate
-cd ..
+cd /d "%~dp0"
 
 :: 6. Launch services in separate windows
+echo.
 echo [INFO] Starting all services in separate windows...
 echo.
 echo [1/3] Launching ML Worker (Flask) on port 8001...
-start "ML Worker (Flask)" cmd /k "call venv\Scripts\activate && cd ml_worker && python worker.py"
+start "ML Worker (Flask)" /D "%~dp0ml_worker" cmd /k "call "%~dp0venv\Scripts\activate.bat" && python worker.py"
 
 echo [2/3] Launching Backend API (Django) on port 8000...
-start "Backend API (Django)" cmd /k "call venv\Scripts\activate && cd backend && python manage.py runserver 0.0.0.0:8000"
+start "Backend API (Django)" /D "%~dp0backend" cmd /k "call "%~dp0venv\Scripts\activate.bat" && python manage.py runserver 0.0.0.0:8000"
 
 echo [3/3] Launching Frontend (React) on port 3000...
-start "Frontend (React)" cmd /k "cd frontend && npm start"
+start "Frontend (React)" /D "%~dp0frontend" cmd /k "npm start"
 
 echo.
 echo ====================================================================
